@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseProviders = void 0;
-const user_entity_1 = require("../../model/user/entities/user.entity");
+const users_entity_1 = require("../../model/users/entities/users.entity");
 const typeorm_1 = require("typeorm");
 exports.databaseProviders = [
     {
@@ -15,7 +15,7 @@ exports.databaseProviders = [
                 password: process.env.DB_PASSWORD,
                 connectTimeout: 60 * 60 * 1000,
                 database: process.env.DB_NAME,
-                entities: [user_entity_1.User],
+                entities: [users_entity_1.User],
                 synchronize: true,
             });
             return dataSource.initialize();
