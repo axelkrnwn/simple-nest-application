@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { AssignmentsService } from './assignments.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UserGuard } from '../users/users.guard';
 
-@Controller('assignments')
+@Controller('courses')
 export class AssignmentsController {
   constructor(private readonly assignmentsService: AssignmentsService) {}
 
-  @Post()
-  create(@Body() createAssignmentDto: CreateAssignmentDto) {
-    return this.assignmentsService.create(createAssignmentDto);
+  @Post("/assignment/:courseid")
+  @UseGuards(UserGuard)
+  @UseInterceptors(FileInterceptor("file"))
+  create(@Param('courseid') courseid: string, @Body() createAssignmentDto: CreateAssignmentDto, @UploadedFile() file:Express.Multer.File) {
+    return this.assignmentsService.create(courseid, createAssignmentDto, file);
   }
 
-  @Get()
-  findAll() {
-    return this.assignmentsService.findAll();
-  }
-
-  @Get(':id')
+  @Get('/assignment/:id')
   findOne(@Param('id') id: string) {
-    return this.assignmentsService.findOne(+id);
+    return this.assignmentsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('/assignment/:id')
   update(@Param('id') id: string, @Body() updateAssignmentDto: UpdateAssignmentDto) {
-    return this.assignmentsService.update(+id, updateAssignmentDto);
+    return this.assignmentsService.update(id, updateAssignmentDto);
   }
 
-  @Delete(':id')
+  @Delete('/assignment/:id')
   remove(@Param('id') id: string) {
-    return this.assignmentsService.remove(+id);
+    return this.assignmentsService.remove(id);
   }
 }

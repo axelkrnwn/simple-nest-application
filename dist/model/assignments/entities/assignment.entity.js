@@ -16,6 +16,7 @@ let Assignment = class Assignment {
     id;
     title;
     description;
+    attachment;
     deadline;
     course;
 };
@@ -32,6 +33,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Assignment.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Assignment.prototype, "attachment", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Date)

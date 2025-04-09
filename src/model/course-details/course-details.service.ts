@@ -20,6 +20,12 @@ export class CourseDetailsService {
       if (!files) {
           throw new BadRequestException('no file uploaded');
       }
+      const maxSize = 100 * 1024 * 1024;
+        if (
+            files.size > maxSize) {
+            throw new BadRequestException('file is too large!');
+        }
+      
       const newCourse = this.courseRepository.create({...dto, createdDate: new Date(), attachment:files.path, course:{id:courseId}})
       console.log('Saving course detail:', newCourse)
       return await this.courseRepository.save(newCourse)

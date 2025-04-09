@@ -1,1 +1,5 @@
-export class CreateAssignmentDto {}
+export class CreateAssignmentDto {
+    title:string;
+    description:string;
+    deadline:Date;
+}

@@ -12,12 +12,26 @@ const assignments_service_1 = require("./assignments.service");
 const assignments_controller_1 = require("./assignments.controller");
 const assignment_entity_1 = require("./entities/assignment.entity");
 const typeorm_1 = require("@nestjs/typeorm");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
 let AssignmentsModule = class AssignmentsModule {
 };
 exports.AssignmentsModule = AssignmentsModule;
 exports.AssignmentsModule = AssignmentsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([assignment_entity_1.Assignment])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([assignment_entity_1.Assignment]),
+            platform_express_1.MulterModule.register({
+                storage: (0, multer_1.diskStorage)({
+                    destination: './uploads/assignments',
+                    filename: (req, file, cb) => {
+                        console.log(req.body);
+                        const filename = `${Date.now()}-${req.body['title']}-${file.originalname}`;
+                        cb(null, filename);
+                    },
+                }),
+            }),
+        ],
         controllers: [assignments_controller_1.AssignmentsController],
         providers: [assignments_service_1.AssignmentsService],
     })

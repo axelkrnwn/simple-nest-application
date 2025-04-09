@@ -4,9 +4,8 @@ import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 export declare class AssignmentsController {
     private readonly assignmentsService;
     constructor(assignmentsService: AssignmentsService);
-    create(createAssignmentDto: CreateAssignmentDto): string;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateAssignmentDto: UpdateAssignmentDto): string;
-    remove(id: string): string;
+    create(courseid: string, createAssignmentDto: CreateAssignmentDto, file: Express.Multer.File): Promise<import("./entities/assignment.entity").Assignment>;
+    findOne(id: string): Promise<import("./entities/assignment.entity").Assignment | null>;
+    update(id: string, updateAssignmentDto: UpdateAssignmentDto): Promise<import("./entities/assignment.entity").Assignment>;
+    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

@@ -1,9 +1,12 @@
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
+import { Assignment } from './entities/assignment.entity';
+import { Repository } from 'typeorm';
 export declare class AssignmentsService {
-    create(createAssignmentDto: CreateAssignmentDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateAssignmentDto: UpdateAssignmentDto): string;
-    remove(id: number): string;
+    private assignmentRepository;
+    constructor(assignmentRepository: Repository<Assignment>);
+    create(courseId: string, dto: CreateAssignmentDto, file: Express.Multer.File): Promise<Assignment>;
+    findOne(id: string): Promise<Assignment | null>;
+    update(id: string, updateAssignmentDto: UpdateAssignmentDto): Promise<Assignment>;
+    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

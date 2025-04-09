@@ -13,6 +13,9 @@ export class Assignment {
     description: string;
     
     @Column()
+    attachment: string;
+    
+    @Column()
     deadline: Date;
 
     @ManyToOne(() => Course, course => course.assignments, {cascade:true})
