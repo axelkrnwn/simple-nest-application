@@ -26,4 +26,5 @@ export class Course {
     @OneToMany(() => CourseDetail, courseDetail => courseDetail.course)
     @JoinColumn()
     courseDetails: CourseDetail[]
+
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ClassStudent } from "src/model/class-students/entities/class-student.entity";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'users'})
 export class User {
@@ -15,5 +16,9 @@ export class User {
     address: string;
     @Column()
     password: string;
+
+    @OneToMany(() => ClassStudent, c => c.student, {cascade: true})
+    @JoinColumn()
+    classes:ClassStudent[]
 
 }

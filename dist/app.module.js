@@ -21,6 +21,8 @@ const submissions_module_1 = require("./model/submissions/submissions.module");
 const assignment_entity_1 = require("./model/assignments/entities/assignment.entity");
 const submission_entity_1 = require("./model/submissions/entities/submission.entity");
 const course_detail_entity_1 = require("./model/course-details/entities/course-detail.entity");
+const class_students_module_1 = require("./model/class-students/class-students.module");
+const class_student_entity_1 = require("./model/class-students/entities/class-student.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,9 +37,9 @@ exports.AppModule = AppModule = __decorate([
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
                 connectTimeout: 60 * 60 * 1000,
-                entities: [users_entity_1.User, courses_entity_1.Course, assignment_entity_1.Assignment, submission_entity_1.Submission, course_detail_entity_1.CourseDetail],
+                entities: [users_entity_1.User, class_student_entity_1.ClassStudent, courses_entity_1.Course, assignment_entity_1.Assignment, submission_entity_1.Submission, course_detail_entity_1.CourseDetail],
                 synchronize: true,
-            }), users_module_1.UserModule, assignments_module_1.AssignmentsModule, courses_module_1.CoursesModule, course_details_module_1.CourseDetailsModule, submissions_module_1.SubmissionsModule
+            }), users_module_1.UserModule, assignments_module_1.AssignmentsModule, courses_module_1.CoursesModule, course_details_module_1.CourseDetailsModule, submissions_module_1.SubmissionsModule, class_students_module_1.ClassStudentsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

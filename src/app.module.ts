@@ -13,6 +13,8 @@ import { SubmissionsModule } from './model/submissions/submissions.module';
 import { Assignment } from './model/assignments/entities/assignment.entity';
 import { Submission } from './model/submissions/entities/submission.entity';
 import { CourseDetail } from './model/course-details/entities/course-detail.entity';
+import { ClassStudentsModule } from './model/class-students/class-students.module';
+import { ClassStudent } from './model/class-students/entities/class-student.entity';
 
 @Module({
   imports: [
@@ -24,9 +26,9 @@ import { CourseDetail } from './model/course-details/entities/course-detail.enti
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       connectTimeout: 60 * 60 * 1000,
-      entities: [User, Course, Assignment, Submission, CourseDetail],
+      entities: [User, ClassStudent, Course, Assignment, Submission, CourseDetail],
       synchronize: true,
-    }), UserModule, AssignmentsModule, CoursesModule, CourseDetailsModule, SubmissionsModule],
+    }), UserModule, AssignmentsModule, CoursesModule, CourseDetailsModule, SubmissionsModule, ClassStudentsModule],
   controllers: [AppController],
   providers: [AppService],
 })

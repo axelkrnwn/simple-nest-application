@@ -1,3 +1,4 @@
+import { ClassStudent } from "src/model/class-students/entities/class-student.entity";
 export declare class User {
     id: string;
     username: string;
@@ -5,4 +6,5 @@ export declare class User {
     role: string;
     address: string;
     password: string;
+    classes: ClassStudent[];
 }
