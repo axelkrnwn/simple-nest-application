@@ -15,6 +15,12 @@ const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./model/users/entities/users.entity");
 const courses_module_1 = require("./model/courses/courses.module");
 const courses_entity_1 = require("./model/courses/entities/courses.entity");
+const course_details_module_1 = require("./model/course-details/course-details.module");
+const assignments_module_1 = require("./model/assignments/assignments.module");
+const submissions_module_1 = require("./model/submissions/submissions.module");
+const assignment_entity_1 = require("./model/assignments/entities/assignment.entity");
+const submission_entity_1 = require("./model/submissions/entities/submission.entity");
+const course_detail_entity_1 = require("./model/course-details/entities/course-detail.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,9 +35,9 @@ exports.AppModule = AppModule = __decorate([
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
                 connectTimeout: 60 * 60 * 1000,
-                entities: [users_entity_1.User, courses_entity_1.Course],
+                entities: [users_entity_1.User, courses_entity_1.Course, assignment_entity_1.Assignment, submission_entity_1.Submission, course_detail_entity_1.CourseDetail],
                 synchronize: true,
-            }), users_module_1.UserModule, courses_module_1.CoursesModule
+            }), users_module_1.UserModule, assignments_module_1.AssignmentsModule, courses_module_1.CoursesModule, course_details_module_1.CourseDetailsModule, submissions_module_1.SubmissionsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

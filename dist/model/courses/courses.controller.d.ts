@@ -1,5 +1,5 @@
 import { CoursesService } from './courses.service';
-import { AddCourseDTO } from './dtos/addCourse.dto';
+import { AddCourseDTO } from './dtos/add-course.dto';
 import { Request } from 'express';
 export declare class CoursesController {
     private courseService;

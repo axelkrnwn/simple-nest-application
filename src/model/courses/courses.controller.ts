@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CoursesService } from './courses.service';
-import { AddCourseDTO } from './dtos/addCourse.dto';
+import { AddCourseDTO } from './dtos/add-course.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserGuard } from '../users/users.guard';
 import { Request } from 'express';
@@ -28,12 +28,13 @@ export class CoursesController {
     }
 
     @Get()
-    getCourses(){
-        return this.courseService.getAllCourse()
+    async getCourses(){
+        return await this.courseService.getAllCourse()
     }
 
     @Get(':id')
-    getCourse(@Param() params: any){
-        return this.courseService.getCourse(params.id)
+    async getCourse(@Param() params: any){
+        let course = await this.courseService.getCourse(params.id)
+        return course
     }
 }

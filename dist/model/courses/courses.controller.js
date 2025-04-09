@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CoursesController = void 0;
 const common_1 = require("@nestjs/common");
 const courses_service_1 = require("./courses.service");
-const addCourse_dto_1 = require("./dtos/addCourse.dto");
+const add_course_dto_1 = require("./dtos/add-course.dto");
 const platform_express_1 = require("@nestjs/platform-express");
 const users_guard_1 = require("../users/users.guard");
 let CoursesController = class CoursesController {
@@ -37,11 +37,12 @@ let CoursesController = class CoursesController {
             });
         }
     }
-    getCourses() {
-        return this.courseService.getAllCourse();
+    async getCourses() {
+        return await this.courseService.getAllCourse();
     }
-    getCourse(params) {
-        return this.courseService.getCourse(params.id);
+    async getCourse(params) {
+        let course = await this.courseService.getCourse(params.id);
+        return course;
     }
 };
 exports.CoursesController = CoursesController;
@@ -53,21 +54,21 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, addCourse_dto_1.AddCourseDTO, Object]),
+    __metadata("design:paramtypes", [Object, add_course_dto_1.AddCourseDTO, Object]),
     __metadata("design:returntype", Promise)
 ], CoursesController.prototype, "addCourse", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CoursesController.prototype, "getCourses", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CoursesController.prototype, "getCourse", null);
 exports.CoursesController = CoursesController = __decorate([
     (0, common_1.Controller)('courses'),

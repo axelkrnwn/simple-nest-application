@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Course = void 0;
+const assignment_entity_1 = require("../../assignments/entities/assignment.entity");
+const course_detail_entity_1 = require("../../course-details/entities/course-detail.entity");
 const users_entity_1 = require("../../users/entities/users.entity");
 const typeorm_1 = require("typeorm");
 let Course = class Course {
@@ -18,6 +20,8 @@ let Course = class Course {
     description;
     image;
     teacher;
+    assignments;
+    courseDetails;
 };
 exports.Course = Course;
 __decorate([
@@ -41,6 +45,16 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", users_entity_1.User)
 ], Course.prototype, "teacher", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => assignment_entity_1.Assignment, assignment => assignment.course),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", Array)
+], Course.prototype, "assignments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => course_detail_entity_1.CourseDetail, courseDetail => courseDetail.course),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", Array)
+], Course.prototype, "courseDetails", void 0);
 exports.Course = Course = __decorate([
     (0, typeorm_1.Entity)({ name: 'courses' })
 ], Course);

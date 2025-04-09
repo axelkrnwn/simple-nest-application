@@ -1,5 +1,7 @@
+import { Assignment } from "src/model/assignments/entities/assignment.entity";
+import { CourseDetail } from "src/model/course-details/entities/course-detail.entity";
 import { User } from "src/model/users/entities/users.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'courses'})
 export class Course {
@@ -16,4 +18,12 @@ export class Course {
     @ManyToOne(() => User)
     @JoinColumn()
     teacher: User;
+
+    @OneToMany(() => Assignment, assignment => assignment.course)
+    @JoinColumn()
+    assignments:Assignment[]
+
+    @OneToMany(() => CourseDetail, courseDetail => courseDetail.course)
+    @JoinColumn()
+    courseDetails: CourseDetail[]
 }

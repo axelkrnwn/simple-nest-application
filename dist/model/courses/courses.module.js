@@ -23,7 +23,7 @@ exports.CoursesModule = CoursesModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([courses_entity_1.Course]),
             platform_express_1.MulterModule.register({
                 storage: (0, multer_1.diskStorage)({
-                    destination: './uploads',
+                    destination: './uploads/courses',
                     filename: (req, file, cb) => {
                         console.log(req.body);
                         const filename = `${Date.now()}-${req.body['title']}-${file.originalname}`;

@@ -1,5 +1,5 @@
 import { User } from './entities/users.entity';
-import { CreateUserDTO } from './dtos/createUser.dto';
+import { CreateUserDTO } from './dtos/create-user.dto';
 import { LoginDTO } from './dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';

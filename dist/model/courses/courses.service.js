@@ -48,7 +48,7 @@ let CoursesService = class CoursesService {
         return await this.courseRepository.find();
     }
     async getCourse(id) {
-        return await this.courseRepository.findOne({ where: { id: id } });
+        return await this.courseRepository.findOne({ relations: ['courseDetails'], where: { id: id } });
     }
 };
 exports.CoursesService = CoursesService;

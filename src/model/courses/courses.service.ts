@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Course } from './entities/courses.entity';
-import { AddCourseDTO } from './dtos/addCourse.dto';
+import { AddCourseDTO } from './dtos/add-course.dto';
 import { User } from '../users/entities/users.entity';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class CoursesService {
     }
 
     async getCourse(id:string){
-        return await this.courseRepository.findOne({where:{id:id}});
+        return await this.courseRepository.findOne({relations:['courseDetails'],where:{id:id}});
     }
 
 }

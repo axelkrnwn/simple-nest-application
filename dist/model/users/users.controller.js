@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const createUser_dto_1 = require("./dtos/createUser.dto");
+const create_user_dto_1 = require("./dtos/create-user.dto");
 const users_service_1 = require("./users.service");
 const login_dto_1 = require("./dtos/login.dto");
 const users_guard_1 = require("./users.guard");
@@ -68,7 +68,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createUser_dto_1.CreateUserDTO]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDTO]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "addUser", null);
 __decorate([

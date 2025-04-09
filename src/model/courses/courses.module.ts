@@ -11,7 +11,7 @@ import { diskStorage } from 'multer';
     TypeOrmModule.forFeature([Course]),
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/courses',
         filename: (req, file, cb) => {
           console.log(req.body)
           const filename = `${Date.now()}-${req.body['title']}-${file.originalname}`;

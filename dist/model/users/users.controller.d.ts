@@ -1,4 +1,4 @@
-import { CreateUserDTO } from './dtos/createUser.dto';
+import { CreateUserDTO } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { LoginDTO } from './dtos/login.dto';
 export declare class UsersController {
