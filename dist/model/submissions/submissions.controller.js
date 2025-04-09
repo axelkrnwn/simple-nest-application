@@ -17,50 +17,75 @@ const common_1 = require("@nestjs/common");
 const submissions_service_1 = require("./submissions.service");
 const create_submission_dto_1 = require("./dto/create-submission.dto");
 const update_submission_dto_1 = require("./dto/update-submission.dto");
+const users_guard_1 = require("../users/users.guard");
+const platform_express_1 = require("@nestjs/platform-express");
+const teacher_guard_1 = require("../users/teacher.guard");
 let SubmissionsController = class SubmissionsController {
     submissionsService;
     constructor(submissionsService) {
         this.submissionsService = submissionsService;
     }
-    create(createSubmissionDto) {
-        return this.submissionsService.create(createSubmissionDto);
+    async create(request, assignmentid, createSubmissionDto, file, id) {
+        try {
+            const user = await request['user'];
+            return this.submissionsService.create(id, user, assignmentid, createSubmissionDto, file);
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.BAD_REQUEST,
+                error: error.message,
+            }, common_1.HttpStatus.BAD_REQUEST, {
+                cause: error
+            });
+        }
     }
-    findAll() {
-        return this.submissionsService.findAll();
+    findAll(assignmentid) {
+        return this.submissionsService.findAll(assignmentid);
     }
     findOne(id) {
-        return this.submissionsService.findOne(+id);
+        return this.submissionsService.findOne(id);
     }
     update(id, updateSubmissionDto) {
-        return this.submissionsService.update(+id, updateSubmissionDto);
+        return this.submissionsService.update(id, updateSubmissionDto);
     }
     remove(id) {
-        return this.submissionsService.remove(+id);
+        return this.submissionsService.remove(id);
     }
 };
 exports.SubmissionsController = SubmissionsController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Post)(':assignmentid/submission'),
+    (0, common_1.Post)(':assignmentid/submission/:id'),
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('assignmentid')),
+    __param(2, (0, common_1.Body)()),
+    __param(3, (0, common_1.UploadedFile)()),
+    __param(4, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_submission_dto_1.CreateSubmissionDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Request, String, create_submission_dto_1.CreateSubmissionDto, Object, String]),
+    __metadata("design:returntype", Promise)
 ], SubmissionsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)(':assignmentid'),
+    (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    __param(0, (0, common_1.Param)('assignmentid')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SubmissionsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('submission/:id'),
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SubmissionsController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)('submission/:id'),
+    (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -68,14 +93,15 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SubmissionsController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('submission/:id'),
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], SubmissionsController.prototype, "remove", null);
 exports.SubmissionsController = SubmissionsController = __decorate([
-    (0, common_1.Controller)('submissions'),
+    (0, common_1.Controller)('courses'),
     __metadata("design:paramtypes", [submissions_service_1.SubmissionsService])
 ], SubmissionsController);
 //# sourceMappingURL=submissions.controller.js.map

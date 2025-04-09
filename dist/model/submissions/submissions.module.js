@@ -10,11 +10,27 @@ exports.SubmissionsModule = void 0;
 const common_1 = require("@nestjs/common");
 const submissions_service_1 = require("./submissions.service");
 const submissions_controller_1 = require("./submissions.controller");
+const submission_entity_1 = require("./entities/submission.entity");
+const typeorm_1 = require("@nestjs/typeorm");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
 let SubmissionsModule = class SubmissionsModule {
 };
 exports.SubmissionsModule = SubmissionsModule;
 exports.SubmissionsModule = SubmissionsModule = __decorate([
     (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([submission_entity_1.Submission]),
+            platform_express_1.MulterModule.register({
+                storage: (0, multer_1.diskStorage)({
+                    destination: './uploads/submissions',
+                    filename: (req, file, cb) => {
+                        console.log(req.params);
+                        const filename = `${Date.now()}-${req['user'].id}-${req.params['assignmentid']}-${file.originalname}`;
+                        cb(null, filename);
+                    },
+                }),
+            }),
+        ],
         controllers: [submissions_controller_1.SubmissionsController],
         providers: [submissions_service_1.SubmissionsService],
     })

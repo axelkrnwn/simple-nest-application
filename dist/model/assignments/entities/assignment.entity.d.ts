@@ -1,4 +1,5 @@
 import { Course } from "src/model/courses/entities/courses.entity";
+import { Submission } from "src/model/submissions/entities/submission.entity";
 export declare class Assignment {
     id: string;
     title: string;
@@ -6,4 +7,5 @@ export declare class Assignment {
     attachment: string;
     deadline: Date;
     course: Course;
+    submissions: Submission[];
 }

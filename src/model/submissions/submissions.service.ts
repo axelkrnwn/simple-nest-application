@@ -1,26 +1,64 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
+import { Repository } from 'typeorm';
+import { Submission } from './entities/submission.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../users/entities/users.entity';
 
 @Injectable()
 export class SubmissionsService {
-  create(createSubmissionDto: CreateSubmissionDto) {
-    return 'This action adds a new submission';
+  constructor(@InjectRepository(Submission) private assignmentRepository:Repository<Submission>){}
+
+  async create(id:string | undefined, user:User, assignmentId:string, dto: CreateSubmissionDto, file:Express.Multer.File) {
+    
+
+    if (!file) {
+            throw new BadRequestException('no file uploaded');
+    }
+    const maxSize = 100 * 1024 * 1024;
+    if (
+        file.size > maxSize) {
+        throw new BadRequestException('file is too large!');
+    }
+    if (id){
+      const updated = await this.findOne(id)
+      if (!updated){
+        throw new Error("assignment not found!")
+      }
+      updated.file = file.path   
+      return await this.assignmentRepository.update(id, updated)
+    }
+    const newSubmission = this.assignmentRepository.create({...dto,file:file.path, assignment:{id:assignmentId}, user:user})
+    console.log(newSubmission)
+
+    return await this.assignmentRepository.save(newSubmission)
   }
 
-  findAll() {
-    return `This action returns all submissions`;
+  async findAll(assignmentid: string) {
+    return await this.assignmentRepository.findOne({where:{assignment:{id:assignmentid}}});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} submission`;
+  async findOne(id: string) {
+    return await this.assignmentRepository.findOne({where:{id:id}});
   }
 
-  update(id: number, updateSubmissionDto: UpdateSubmissionDto) {
-    return `This action updates a #${id} submission`;
+  async update(id: string, updateSubmissionDto: UpdateSubmissionDto) {
+    const updated = await this.findOne(id)
+
+    if (!updated){
+      throw new Error("assignment not found!")
+    }
+    const data = this.assignmentRepository.merge(
+      updated,
+      updateSubmissionDto,
+    );
+    return await this.assignmentRepository.save(
+      data,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} submission`;
+  async remove(id: string) {
+    return await this.assignmentRepository.delete(id)
   }
 }

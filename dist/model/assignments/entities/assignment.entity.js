@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Assignment = void 0;
 const courses_entity_1 = require("../../courses/entities/courses.entity");
+const submission_entity_1 = require("../../submissions/entities/submission.entity");
 const typeorm_1 = require("typeorm");
 let Assignment = class Assignment {
     id;
@@ -19,6 +20,7 @@ let Assignment = class Assignment {
     attachment;
     deadline;
     course;
+    submissions;
 };
 exports.Assignment = Assignment;
 __decorate([
@@ -46,6 +48,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", courses_entity_1.Course)
 ], Assignment.prototype, "course", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => submission_entity_1.Submission, submission => submission.assignment, { cascade: true }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", Array)
+], Assignment.prototype, "submissions", void 0);
 exports.Assignment = Assignment = __decorate([
     (0, typeorm_1.Entity)({ name: "assignments" })
 ], Assignment);
