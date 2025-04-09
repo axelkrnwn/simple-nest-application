@@ -40,7 +40,7 @@ export class UsersService {
         if (!verify){
             throw new Error("Password incorrect")
         }
-        const payload = {sub:users.id, role:users.role, username:users.username}
+        const payload = {id:users.id, role:users.role, username:users.username}
         return {
             access_token: await this.jwtService.signAsync(payload),
         };

@@ -13,6 +13,8 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./model/users/users.module");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./model/users/entities/users.entity");
+const courses_module_1 = require("./model/courses/courses.module");
+const courses_entity_1 = require("./model/courses/entities/courses.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,9 +29,9 @@ exports.AppModule = AppModule = __decorate([
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
                 connectTimeout: 60 * 60 * 1000,
-                entities: [users_entity_1.User],
+                entities: [users_entity_1.User, courses_entity_1.Course],
                 synchronize: true,
-            }), users_module_1.UserModule
+            }), users_module_1.UserModule, courses_module_1.CoursesModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

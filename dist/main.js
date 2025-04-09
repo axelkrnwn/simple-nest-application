@@ -9,6 +9,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use(express.static("uploads"));
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { UserModule } from './model/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './model/users/entities/users.entity';
+import { CoursesModule } from './model/courses/courses.module';
+import { DatabaseModule } from './providers/database/database.module';
+import { Course } from './model/courses/entities/courses.entity';
 
 @Module({
   imports: [
@@ -15,9 +18,9 @@ import { User } from './model/users/entities/users.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       connectTimeout: 60 * 60 * 1000,
-      entities: [User],
+      entities: [User, Course],
       synchronize: true,
-    }), UserModule],
+    }), UserModule, CoursesModule],
   controllers: [AppController],
   providers: [AppService],
 })

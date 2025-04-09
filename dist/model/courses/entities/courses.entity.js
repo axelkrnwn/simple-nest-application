@@ -9,42 +9,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Course = void 0;
+const users_entity_1 = require("../../users/entities/users.entity");
 const typeorm_1 = require("typeorm");
-let User = class User {
+let Course = class Course {
     id;
-    username;
-    email;
-    role;
-    address;
-    password;
+    title;
+    description;
+    image;
+    teacher;
 };
-exports.User = User;
+exports.Course = Course;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], Course.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], Course.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "role", void 0);
+], Course.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "address", void 0);
+], Course.prototype, "image", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-exports.User = User = __decorate([
-    (0, typeorm_1.Entity)({ name: 'users' })
-], User);
-//# sourceMappingURL=users.entity.js.map
+    (0, typeorm_1.ManyToOne)(() => users_entity_1.User),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", users_entity_1.User)
+], Course.prototype, "teacher", void 0);
+exports.Course = Course = __decorate([
+    (0, typeorm_1.Entity)({ name: 'courses' })
+], Course);
+//# sourceMappingURL=courses.entity.js.map
