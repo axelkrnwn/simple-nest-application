@@ -14,7 +14,7 @@ export class Seeder {
         const user = this.repository.create({
             "username":"admin",
             "email":process.env.ADMIN_EMAIL,
-            "password": await Hasher.hash(process.env.ADMIN_EMAIL ?? ""),
+            "password": await Hasher.hash(process.env.ADMIN_PASSWORD ?? ""),
             "role":"admin",
             "address":"-"
         })
