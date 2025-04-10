@@ -16,27 +16,30 @@ exports.Seeder = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("../../model/users/entities/users.entity");
+const hash_1 = require("../../util/hash");
 const typeorm_2 = require("typeorm");
 let Seeder = class Seeder {
     repository;
-    constructor(repository) {
+    logger;
+    constructor(repository, logger) {
         this.repository = repository;
+        this.logger = logger;
     }
     async seed() {
         const user = this.repository.create({
             "username": "admin",
             "email": process.env.ADMIN_EMAIL,
-            "password": process.env.ADMIN_PASSWORD,
+            "password": await hash_1.Hasher.hash(process.env.ADMIN_EMAIL ?? ""),
             "role": "admin",
             "address": "-"
         });
-        await this.repository.save(user);
+        await this.repository.save(user).then(() => this.logger.debug('Seeding success')).catch(error => this.logger.error(error.message));
     }
 };
 exports.Seeder = Seeder;
 exports.Seeder = Seeder = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(users_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository, common_1.Logger])
 ], Seeder);
 //# sourceMappingURL=seeder.js.map

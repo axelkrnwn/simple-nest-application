@@ -7,6 +7,7 @@ import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  
   app.use(express.urlencoded({ extended: true })); 
   app.use(express.json());
   app.use(express.static("uploads"));

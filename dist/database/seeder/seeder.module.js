@@ -11,13 +11,14 @@ const common_1 = require("@nestjs/common");
 const seeder_1 = require("./seeder");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("../../model/users/entities/users.entity");
+const database_module_1 = require("../../providers/database/database.module");
 let SeederModule = class SeederModule {
 };
 exports.SeederModule = SeederModule;
 exports.SeederModule = SeederModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([users_entity_1.User]),],
-        providers: [seeder_1.Seeder],
+        imports: [database_module_1.DatabaseModule, typeorm_1.TypeOrmModule.forFeature([users_entity_1.User]),],
+        providers: [seeder_1.Seeder, common_1.Logger],
     })
 ], SeederModule);
 //# sourceMappingURL=seeder.module.js.map
