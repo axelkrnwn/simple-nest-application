@@ -28,7 +28,7 @@ let UsersController = class UsersController {
     }
     async addUser(createUserDTO) {
         try {
-            await this.userService.createUser(createUserDTO);
+            return await this.userService.createUser(createUserDTO);
         }
         catch (error) {
             throw new common_1.HttpException({
@@ -53,8 +53,13 @@ let UsersController = class UsersController {
             });
         }
     }
-    me(request) {
-        return request['user'];
+    async me(request) {
+        const res = await request['user'];
+        const user = await this.userService.getUser(res.id);
+        return user;
+    }
+    remove(id) {
+        return this.userService.remove(id);
     }
 };
 exports.UsersController = UsersController;
@@ -84,8 +89,15 @@ __decorate([
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Request]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UsersController.prototype, "me", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "remove", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

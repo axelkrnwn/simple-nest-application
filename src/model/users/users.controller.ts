@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { CreateUserDTO } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { LoginDTO } from './dtos/login.dto';
@@ -18,7 +18,7 @@ export class UsersController {
     @Post()
     async addUser(@Body() createUserDTO: CreateUserDTO){
         try{
-            await this.userService.createUser(createUserDTO)
+            return await this.userService.createUser(createUserDTO)
         }catch(error){
             throw new HttpException({
                 status: HttpStatus.BAD_REQUEST,
@@ -45,7 +45,17 @@ export class UsersController {
 
     @UseGuards(UserGuard)
     @Get('me')
-    me(@Req() request: Request){
-        return request['user']  
+    async me(@Req() request: Request){
+        const res = await request['user']
+        
+        const user = await this.userService.getUser(res.id)
+        return user
     }
+    
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+    return this.userService.remove(id);
+    }
+
+
 }

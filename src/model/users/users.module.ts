@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
     imports: [
@@ -13,7 +14,8 @@ import { DataSource } from 'typeorm';
             global: true,
             secret: process.env.JWT_SECRET,
             signOptions: { expiresIn: '1d' },
-          })
+          }),
+        CacheModule.register()
     ],
     controllers: [UsersController],
     providers: [

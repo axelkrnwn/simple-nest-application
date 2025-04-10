@@ -23,14 +23,12 @@ let CoursesService = class CoursesService {
         this.courseRepository = courseRepository;
     }
     async addCourse(teacher, dto, image) {
+        console.log(image);
         if (dto.title.length < 5 || dto.title.length > 50) {
             throw new common_1.BadRequestException('title must be 5-50 characters');
         }
         if (dto.description.length < 5 || dto.description.length > 100) {
             throw new common_1.BadRequestException('description must be 5-100 characters');
-        }
-        if (!image) {
-            throw new common_1.BadRequestException('no file uploaded');
         }
         const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (!allowedMimeTypes.includes(image.mimetype)) {

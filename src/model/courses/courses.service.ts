@@ -11,16 +11,17 @@ export class CoursesService {
     constructor(@InjectRepository(Course) private courseRepository:Repository<Course>){}
 
     async addCourse(teacher:User, dto: AddCourseDTO, image: Express.Multer.File){
+        console.log(image)
         if (dto.title.length < 5 || dto.title.length > 50){
             throw new BadRequestException('title must be 5-50 characters');
         }
         if (dto.description.length < 5 || dto.description.length > 100){
             throw new BadRequestException('description must be 5-100 characters');
         }
-        if (!
-            image) {
-            throw new BadRequestException('no file uploaded');
-        }
+        // if (!
+        //     image) {
+        //     throw new BadRequestException('no file uploaded');
+        // }
         const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (!allowedMimeTypes.includes(
             image.mimetype)) {

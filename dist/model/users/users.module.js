@@ -13,6 +13,7 @@ const users_service_1 = require("./users.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const users_entity_1 = require("./entities/users.entity");
 const jwt_1 = require("@nestjs/jwt");
+const cache_manager_1 = require("@nestjs/cache-manager");
 let UserModule = class UserModule {
 };
 exports.UserModule = UserModule;
@@ -24,7 +25,8 @@ exports.UserModule = UserModule = __decorate([
                 global: true,
                 secret: process.env.JWT_SECRET,
                 signOptions: { expiresIn: '1d' },
-            })
+            }),
+            cache_manager_1.CacheModule.register()
         ],
         controllers: [users_controller_1.UsersController],
         providers: [

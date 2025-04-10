@@ -18,6 +18,15 @@ export class Seeder {
             "role":"admin",
             "address":"-"
         })
-        await this.repository.save(user).then(() => this.logger.debug('Seeding success')).catch(error => this.logger.error(error.message))
+        const user2 = this.repository.create({
+            "username":"dummy",
+            "email":"dummy@gmail.com",
+            "password": await Hasher.hash("dummy123"),
+            "role":"student",
+            "address":"123 Address St."
+        })
+
+        await this.repository.save(user)
+        await this.repository.save(user2)
     }
 }

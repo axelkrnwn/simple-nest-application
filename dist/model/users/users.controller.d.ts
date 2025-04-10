@@ -4,10 +4,11 @@ import { LoginDTO } from './dtos/login.dto';
 export declare class UsersController {
     private userService;
     constructor(userService: UsersService);
-    getUsers(): Promise<import("./entities/users.entity").User[]>;
-    addUser(createUserDTO: CreateUserDTO): Promise<void>;
+    getUsers(): Promise<unknown>;
+    addUser(createUserDTO: CreateUserDTO): Promise<import("./entities/users.entity").User>;
     login(loginDTO: LoginDTO): Promise<{
         access_token: string;
     }>;
-    me(request: Request): any;
+    me(request: Request): Promise<unknown>;
+    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }
