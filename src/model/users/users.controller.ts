@@ -3,6 +3,7 @@ import { CreateUserDTO } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { LoginDTO } from './dtos/login.dto';
 import { UserGuard } from './users.guard';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -11,11 +12,18 @@ export class UsersController {
     }
 
     @Get()
+    @ApiResponse({ status: 200, description: 'The users has been successfully fetched.'})
     getUsers(){
         return this.userService.getAllUser()
     }
 
     @Post()
+    @ApiBody({
+        type: CreateUserDTO,
+        description: 'Json structure to create user object',
+     })
+    @ApiResponse({ status: 201, description: 'The user has been successfully created.'})
+    @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
     async addUser(@Body() createUserDTO: CreateUserDTO){
         try{
             return await this.userService.createUser(createUserDTO)
@@ -29,6 +37,12 @@ export class UsersController {
         }
     }
     @Post('login')
+    @ApiBody({
+        type: LoginDTO,
+        description: 'Json structure to login',
+     })
+    @ApiResponse({ status: 200, description: 'The user has been successfully login.'})
+    @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
     async login(@Body() loginDTO: LoginDTO){
         try {
             const res = await this.userService.login(loginDTO)
@@ -45,6 +59,9 @@ export class UsersController {
 
     @UseGuards(UserGuard)
     @Get('me')
+    @ApiResponse({ status: 200, description: 'The user has been successfully fetched.'})
+    @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
+    @ApiResponse({ status: 403, description: 'Unauthorized user.'})
     async me(@Req() request: Request){
         const res = await request['user']
         
@@ -52,7 +69,10 @@ export class UsersController {
         return user
     }
     
+    @UseGuards(UserGuard)
     @Delete(':id')
+    @ApiResponse({ status: 201, description: 'The user has been successfully deleted.'})
+    @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
     remove(@Param('id') id: string) {
     return this.userService.remove(id);
     }

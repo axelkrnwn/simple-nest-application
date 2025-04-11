@@ -1,1 +1,1 @@
-{"version":3,"file":"create-class-student.dto.js","sourceRoot":"","sources":["../../../../src/model/class-students/dto/create-class-student.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,qBAAqB;IAC9B,QAAQ,CAAO;CAClB;AAFD,sDAEC"}
+{"version":3,"file":"create-class-student.dto.js","sourceRoot":"","sources":["../../../../src/model/class-students/dto/create-class-student.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,6CAA8C;AAE9C,MAAa,qBAAqB;IAI9B,QAAQ,CAAO;CAClB;AALD,sDAKC;AADG;IAHC,IAAA,qBAAW,EAAC;QACT,QAAQ,EAAE,IAAI;KACjB,CAAC;;uDACa"}

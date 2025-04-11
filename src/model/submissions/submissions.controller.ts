@@ -5,6 +5,7 @@ import { UpdateSubmissionDto } from './dto/update-submission.dto';
 import { UserGuard } from '../users/users.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TeacherGuard } from '../users/teacher.guard';
+import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 
 @Controller('courses')
 export class SubmissionsController {
@@ -14,6 +15,22 @@ export class SubmissionsController {
   @Post(':assignmentid/submission/:id')
   @UseGuards(UserGuard)
   @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+      schema: {
+        type: 'object',
+        properties: {
+          file: {
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+      description: "JSON Structure to create course object."
+  })
+  @ApiResponse({status:201, description:"Assignment completed."})
+  @ApiResponse({status:400, description:"Invalid request."})
+  @ApiResponse({status:403, description:"Unauthorized."})
   async create(
     @Req() request:Request, 
     @Param('assignmentid') assignmentid: string, 
@@ -36,24 +53,36 @@ export class SubmissionsController {
 
   @Get(':assignmentid')
   @UseGuards(TeacherGuard)
+  @ApiResponse({status:200, description:"Submissions fetched."})
+  @ApiResponse({status:400, description:"Invalid request."})
+  @ApiResponse({status:403, description:"Unauthorized."})
   findAll(@Param('assignmentid') assignmentid: string) {
     return this.submissionsService.findAll(assignmentid);
   }
-
+  
   @Get('submission/:id')
   @UseGuards(UserGuard)
+  @ApiResponse({status:200, description:"Submission fetched."})
+  @ApiResponse({status:400, description:"Not found."})
+  @ApiResponse({status:403, description:"Unauthorized."})
   findOne(@Param('id') id: string) {
     return this.submissionsService.findOne(id);
   }
-
+  
   @Patch('submission/:id')
   @UseGuards(TeacherGuard)
+  @ApiResponse({status:200, description:"Submission graded."})
+  @ApiResponse({status:400, description:"Not found."})
+  @ApiResponse({status:403, description:"Unauthorized."})
   update(@Param('id') id: string, @Body() updateSubmissionDto: UpdateSubmissionDto) {
     return this.submissionsService.update(id, updateSubmissionDto);
   }
-
+  
   @Delete('submission/:id')
   @UseGuards(UserGuard)
+  @ApiResponse({status:200, description:"Submission deleted."})
+  @ApiResponse({status:400, description:"Not found."})
+  @ApiResponse({status:403, description:"Unauthorized."})
   remove(@Param('id') id: string) {
     return this.submissionsService.remove(id);
   }

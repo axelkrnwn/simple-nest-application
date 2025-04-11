@@ -40,11 +40,11 @@ export class CoursesService {
     }
 
     async getAllCourse(){
-        return await this.courseRepository.find();
+        return await this.courseRepository.find({relations:['teacher']});
     }
 
     async getCourse(id:string){
-        return await this.courseRepository.findOne({relations:['courseDetails', 'assignments'],where:{id:id}});
+        return await this.courseRepository.findOne({relations:['courseDetails', 'assignments','teacher'],where:{id:id}});
     }
 
 }

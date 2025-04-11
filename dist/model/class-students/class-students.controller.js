@@ -19,6 +19,7 @@ const create_class_student_dto_1 = require("./dto/create-class-student.dto");
 const update_class_student_dto_1 = require("./dto/update-class-student.dto");
 const users_guard_1 = require("../users/users.guard");
 const teacher_guard_1 = require("../users/teacher.guard");
+const swagger_1 = require("@nestjs/swagger");
 let ClassStudentsController = class ClassStudentsController {
     classStudentsService;
     constructor(classStudentsService) {
@@ -47,6 +48,13 @@ exports.ClassStudentsController = ClassStudentsController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBody)({
+        type: create_class_student_dto_1.CreateClassStudentDto,
+        description: "JSON structure to enroll student"
+    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "User enrolled." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -56,6 +64,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Course Student fetched." }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -64,6 +74,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)('/course/:id'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Course Student fetched." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -71,6 +83,13 @@ __decorate([
 ], ClassStudentsController.prototype, "findByCourse", null);
 __decorate([
     (0, common_1.Patch)(':id'),
+    (0, swagger_1.ApiBody)({
+        type: update_class_student_dto_1.UpdateClassStudentDto,
+        description: "JSON structure to re-enroll student"
+    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "User enrolled." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -80,6 +99,9 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Course Student removed." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

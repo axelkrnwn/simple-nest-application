@@ -18,6 +18,7 @@ const create_user_dto_1 = require("./dtos/create-user.dto");
 const users_service_1 = require("./users.service");
 const login_dto_1 = require("./dtos/login.dto");
 const users_guard_1 = require("./users.guard");
+const swagger_1 = require("@nestjs/swagger");
 let UsersController = class UsersController {
     userService;
     constructor(userService) {
@@ -65,12 +66,19 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'The users has been successfully fetched.' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getUsers", null);
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiBody)({
+        type: create_user_dto_1.CreateUserDTO,
+        description: 'Json structure to create user object',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'The user has been successfully created.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDTO]),
@@ -78,6 +86,12 @@ __decorate([
 ], UsersController.prototype, "addUser", null);
 __decorate([
     (0, common_1.Post)('login'),
+    (0, swagger_1.ApiBody)({
+        type: login_dto_1.LoginDTO,
+        description: 'Json structure to login',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'The user has been successfully login.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_dto_1.LoginDTO]),
@@ -86,13 +100,19 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
     (0, common_1.Get)('me'),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'The user has been successfully fetched.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Unauthorized user.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Request]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "me", null);
 __decorate([
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'The user has been successfully deleted.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

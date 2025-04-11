@@ -43,10 +43,10 @@ let CoursesService = class CoursesService {
         return await this.courseRepository.save(newCourse);
     }
     async getAllCourse() {
-        return await this.courseRepository.find();
+        return await this.courseRepository.find({ relations: ['teacher'] });
     }
     async getCourse(id) {
-        return await this.courseRepository.findOne({ relations: ['courseDetails', 'assignments'], where: { id: id } });
+        return await this.courseRepository.findOne({ relations: ['courseDetails', 'assignments', 'teacher'], where: { id: id } });
     }
 };
 exports.CoursesService = CoursesService;
