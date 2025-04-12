@@ -7,6 +7,6 @@ export declare class AssignmentsService {
     constructor(assignmentRepository: Repository<Assignment>);
     create(courseId: string, dto: CreateAssignmentDto, file: Express.Multer.File): Promise<Assignment>;
     findOne(id: string): Promise<Assignment | null>;
-    update(id: string, updateAssignmentDto: UpdateAssignmentDto): Promise<Assignment>;
+    update(id: string, updateAssignmentDto: UpdateAssignmentDto, file: Express.Multer.File): Promise<Assignment>;
     remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

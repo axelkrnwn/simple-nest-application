@@ -8,4 +8,5 @@ export declare class CoursesService {
     addCourse(teacher: User, dto: AddCourseDTO, image: Express.Multer.File): Promise<Course>;
     getAllCourse(): Promise<Course[]>;
     getCourse(id: string): Promise<Course | null>;
+    getCourseByTeacher(userId: string): Promise<Course[]>;
 }

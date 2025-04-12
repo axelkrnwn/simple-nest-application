@@ -99,10 +99,11 @@ __decorate([
 ], UsersController.prototype, "login", null);
 __decorate([
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.Get)('me'),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'The user has been successfully fetched.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: 'Unauthorized user.' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized user.' }),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Request]),
@@ -110,6 +111,7 @@ __decorate([
 ], UsersController.prototype, "me", null);
 __decorate([
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.Delete)(':id'),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'The user has been successfully deleted.' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),

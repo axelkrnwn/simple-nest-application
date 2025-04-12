@@ -6,5 +6,6 @@ export declare class CoursesController {
     constructor(courseService: CoursesService);
     addCourse(request: Request, dto: AddCourseDTO, image: Express.Multer.File): Promise<void>;
     getCourses(): Promise<import("./entities/courses.entity").Course[]>;
+    getCourseByTeacher(request: Request): Promise<import("./entities/courses.entity").Course[]>;
     getCourse(params: any): Promise<import("./entities/courses.entity").Course | null>;
 }

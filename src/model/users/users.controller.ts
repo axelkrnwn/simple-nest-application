@@ -3,7 +3,7 @@ import { CreateUserDTO } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { LoginDTO } from './dtos/login.dto';
 import { UserGuard } from './users.guard';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -58,10 +58,11 @@ export class UsersController {
     }
 
     @UseGuards(UserGuard)
+    @ApiBearerAuth('access-token')
     @Get('me')
     @ApiResponse({ status: 200, description: 'The user has been successfully fetched.'})
     @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
-    @ApiResponse({ status: 403, description: 'Unauthorized user.'})
+    @ApiResponse({ status: 401, description: 'Unauthorized user.'})
     async me(@Req() request: Request){
         const res = await request['user']
         
@@ -70,6 +71,7 @@ export class UsersController {
     }
     
     @UseGuards(UserGuard)
+    @ApiBearerAuth('access-token')
     @Delete(':id')
     @ApiResponse({ status: 201, description: 'The user has been successfully deleted.'})
     @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})

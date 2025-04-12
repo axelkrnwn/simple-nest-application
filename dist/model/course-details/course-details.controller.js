@@ -42,6 +42,7 @@ exports.CourseDetailsController = CourseDetailsController;
 __decorate([
     (0, common_1.Post)("/detail/:courseid"),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({
@@ -60,7 +61,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: "Course has successfully created." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Course validation not satisfied." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized user" }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized user" }),
     __param(0, (0, common_1.Param)('courseid')),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.UploadedFile)()),
@@ -80,13 +81,14 @@ __decorate([
 __decorate([
     (0, common_1.Patch)('/detail/:id'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiBody)({
         type: update_course_detail_dto_1.UpdateCourseDetailDto,
         description: "JSON Structure to create course object."
     }),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Course has successfully updated." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Course validation not satisfied." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized user" }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized user" }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -96,6 +98,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('/detail/:id'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Course has successfully fetehed." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
     __param(0, (0, common_1.Param)('id')),

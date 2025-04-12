@@ -28,6 +28,7 @@ let SubmissionsController = class SubmissionsController {
     }
     async create(request, assignmentid, createSubmissionDto, file, id) {
         try {
+            console.log(id);
             const user = await request['user'];
             return this.submissionsService.create(id, user, assignmentid, createSubmissionDto, file);
         }
@@ -58,6 +59,7 @@ __decorate([
     (0, common_1.Post)(':assignmentid/submission'),
     (0, common_1.Post)(':assignmentid/submission/:id'),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({
@@ -74,7 +76,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: "Assignment completed." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Invalid request." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Param)('assignmentid')),
     __param(2, (0, common_1.Body)()),
@@ -87,9 +89,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':assignmentid'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Submissions fetched." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Invalid request." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
     __param(0, (0, common_1.Param)('assignmentid')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -98,9 +101,10 @@ __decorate([
 __decorate([
     (0, common_1.Get)('submission/:id'),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Submission fetched." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Not found." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -109,9 +113,13 @@ __decorate([
 __decorate([
     (0, common_1.Patch)('submission/:id'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBody)({
+        type: update_submission_dto_1.UpdateSubmissionDto
+    }),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Submission graded." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Not found." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -121,9 +129,10 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('submission/:id'),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Submission deleted." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Not found." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

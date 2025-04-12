@@ -3,7 +3,7 @@ import { CourseDetailsService } from './course-details.service';
 import { CreateCourseDetailDto } from './dto/create-course-detail.dto';
 import { UpdateCourseDetailDto } from './dto/update-course-detail.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiProduces, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiProduces, ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { TeacherGuard } from '../users/teacher.guard';
 
 @Controller('courses')
@@ -12,6 +12,7 @@ export class CourseDetailsController {
 
   @Post("/detail/:courseid")
   @UseGuards(TeacherGuard)
+  @ApiBearerAuth('access-token')
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -30,7 +31,7 @@ export class CourseDetailsController {
   })
   @ApiResponse({status:201, description:"Course has successfully created."})
   @ApiResponse({status:400, description:"Course validation not satisfied."})
-  @ApiResponse({status:403, description:"Unauthorized user"})
+  @ApiResponse({status:401, description:"Unauthorized user"})
   async create(@Param('courseid') courseid: string, @Body() createCourseDetailDto: CreateCourseDetailDto, 
   @UploadedFile() file:Express.Multer.File) {
     return await this.courseDetailsService.create(createCourseDetailDto, file, courseid);
@@ -46,19 +47,21 @@ export class CourseDetailsController {
 
   @Patch('/detail/:id')
   @UseGuards(TeacherGuard)
+  @ApiBearerAuth('access-token')
   @ApiBody({
     type: UpdateCourseDetailDto,
     description: "JSON Structure to create course object."
   })
   @ApiResponse({status:200, description:"Course has successfully updated."})
   @ApiResponse({status:400, description:"Course validation not satisfied."})
-  @ApiResponse({status:403, description:"Unauthorized user"})
+  @ApiResponse({status:401, description:"Unauthorized user"})
   update(@Param('id') id: string, @Body() updateCourseDetailDto: UpdateCourseDetailDto) {
     return this.courseDetailsService.update(id, updateCourseDetailDto);
   }
 
   @Delete('/detail/:id')
   @UseGuards(TeacherGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({status:200, description:"Course has successfully fetehed."})
   @ApiResponse({status:400, description:"Course not found."})
   remove(@Param('id') id: string) {

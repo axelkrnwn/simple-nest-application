@@ -22,21 +22,33 @@ let ClassStudentsService = class ClassStudentsService {
     constructor(repo) {
         this.repo = repo;
     }
-    async create(userId, dto) {
-        if (userId == "") {
+    async create(user, dto) {
+        console.log(dto);
+        if (user.role != "student") {
+            throw new common_1.UnauthorizedException();
+        }
+        const enroll = await this.find(user.id, dto.courseId);
+        if (enroll != null) {
             throw new common_1.UnauthorizedException();
         }
         if (dto.courseId == "") {
             throw new Error("Course invalid");
         }
-        const data = this.repo.create({ studentId: userId, ...dto, enrollmentDate: new Date() });
+        const data = this.repo.create({ studentId: user.id, ...dto, enrollmentDate: new Date() });
         return await this.repo.save(data);
     }
+    async find(userId, courseId) {
+        return await this.repo.findOne({ where: { studentId: userId, courseId: courseId } });
+    }
     async findByUser(userId) {
-        return await this.repo.find({ where: { studentId: userId }, relations: ['course'] });
+        return await this.repo.find({ where: { studentId: userId }, relations: {
+                course: {
+                    teacher: true
+                }
+            } });
     }
     async findByCourse(courseId) {
-        return await this.repo.find({ where: { courseId: courseId }, relations: ['student'] });
+        return await this.repo.find({ where: { courseId: courseId }, relations: ['student'], select: { student: true } });
     }
     async update(id, dto) {
         if (id == "") {

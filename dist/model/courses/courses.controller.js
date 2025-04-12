@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const courses_service_1 = require("./courses.service");
 const add_course_dto_1 = require("./dtos/add-course.dto");
 const platform_express_1 = require("@nestjs/platform-express");
+const users_guard_1 = require("../users/users.guard");
 const swagger_1 = require("@nestjs/swagger");
 const teacher_guard_1 = require("../users/teacher.guard");
 let CoursesController = class CoursesController {
@@ -41,6 +42,13 @@ let CoursesController = class CoursesController {
     async getCourses() {
         return await this.courseService.getAllCourse();
     }
+    async getCourseByTeacher(request) {
+        const user = await request['user'];
+        console.log('here');
+        console.log(user);
+        let course = await this.courseService.getCourseByTeacher(user.id);
+        return course;
+    }
     async getCourse(params) {
         let course = await this.courseService.getCourse(params.id);
         return course;
@@ -50,6 +58,7 @@ exports.CoursesController = CoursesController;
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
     (0, swagger_1.ApiBody)({
@@ -58,7 +67,7 @@ __decorate([
             properties: {
                 title: { type: 'string' },
                 description: { type: 'string' },
-                file: {
+                image: {
                     type: 'string',
                     format: 'binary',
                 },
@@ -68,7 +77,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: "Course has successfully created." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Course validation not satisfied." }),
-    (0, swagger_1.ApiResponse)({ status: 403, description: "Unauthorized user" }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized user" }),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.UploadedFile)()),
@@ -83,6 +92,18 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CoursesController.prototype, "getCourses", null);
+__decorate([
+    (0, common_1.Get)('/user'),
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Course has successfully fetched." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Course not found." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CoursesController.prototype, "getCourseByTeacher", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Course has successfully fetched." }),

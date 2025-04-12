@@ -33,12 +33,27 @@ export class AssignmentsService {
     return await this.assignmentRepository.findOne({where:{id:id}});
   }
 
-  async update(id: string, updateAssignmentDto: UpdateAssignmentDto) {
+  async update(id: string, updateAssignmentDto: UpdateAssignmentDto, file:Express.Multer.File) {
     const updated = await this.findOne(id)
-
     if (!updated){
       throw new Error("course's post not found!")
     }
+    if (updateAssignmentDto.title && (updateAssignmentDto.title.length < 5 || updateAssignmentDto.title.length > 50)){
+        throw new BadRequestException('title must be 5-50 characters');
+    }
+    if (updateAssignmentDto.description && (updateAssignmentDto.description.length < 5 || updateAssignmentDto.description.length > 100)){
+        throw new BadRequestException('description must be 5-100 characters');
+    }
+    if (updateAssignmentDto.deadline && (new Date(updateAssignmentDto.deadline).getTime() < new Date().getTime())){
+        throw new BadRequestException('deadline must not before now');
+    }
+    const maxSize = 100 * 1024 * 1024;
+    if (file &&
+        file.size > maxSize) {
+        throw new BadRequestException('file is too large!');
+    }
+    updated.attachment = file.path
+    
     const data = this.assignmentRepository.merge(
       updated,
       updateAssignmentDto,

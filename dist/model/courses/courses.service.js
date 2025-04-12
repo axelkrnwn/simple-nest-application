@@ -48,6 +48,10 @@ let CoursesService = class CoursesService {
     async getCourse(id) {
         return await this.courseRepository.findOne({ relations: ['courseDetails', 'assignments', 'teacher'], where: { id: id } });
     }
+    async getCourseByTeacher(userId) {
+        console.log(userId);
+        return await this.courseRepository.find({ relations: ['courseDetails', 'assignments', 'teacher'], where: { teacher: { id: userId } } });
+    }
 };
 exports.CoursesService = CoursesService;
 exports.CoursesService = CoursesService = __decorate([

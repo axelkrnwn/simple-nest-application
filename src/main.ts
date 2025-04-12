@@ -13,7 +13,15 @@ async function bootstrap() {
     .setTitle('LinKasa API Documentation')
     .setDescription('An API Documentation for LinKasa built using Swagger')
     .setVersion('1.0')
-    .addTag('education')
+    .addTag('education').addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'access-token', 
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

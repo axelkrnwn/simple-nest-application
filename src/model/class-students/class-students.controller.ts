@@ -5,7 +5,7 @@ import { UpdateClassStudentDto } from './dto/update-class-student.dto';
 import { UserGuard } from '../users/users.guard';
 import { Request } from 'express';
 import { TeacherGuard } from '../users/teacher.guard';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('class-students')
 export class ClassStudentsController {
@@ -13,28 +13,31 @@ export class ClassStudentsController {
 
   @Post()
   @UseGuards(UserGuard)
+  @ApiBearerAuth('access-token')
   @ApiBody({
     type: CreateClassStudentDto,
     description: "JSON structure to enroll student"
   })
   @ApiResponse({status:200, description:"User enrolled."})
   @ApiResponse({status:400, description:"Course not found."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   async create(@Req() request:Request,@Body() createClassStudentDto: CreateClassStudentDto) {
     const user = await request['user']
-    return this.classStudentsService.create(user.id, createClassStudentDto);
+    return this.classStudentsService.create(user, createClassStudentDto);
   }
 
   @Get()
   @UseGuards(UserGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({status:200, description:"Course Student fetched."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   async findByUser(@Req() request:Request){
     const user = await request['user']
     return this.classStudentsService.findByUser(user.id)
   }
   @Get('/course/:id')
-  @UseGuards(TeacherGuard)
+  @UseGuards(UserGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({status:200, description:"Course Student fetched."})
   @ApiResponse({status:400, description:"Course not found."})
   async findByCourse(@Param('id') id: string){
@@ -48,16 +51,17 @@ export class ClassStudentsController {
   })
   @ApiResponse({status:200, description:"User enrolled."})
   @ApiResponse({status:400, description:"Course not found."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   update(@Param('id') id: string, @Body() updateClassStudentDto: UpdateClassStudentDto) {
     return this.classStudentsService.update(id, updateClassStudentDto);
   }
   
   @Delete(':id')
   @UseGuards(UserGuard)
+  @ApiBearerAuth('access-token')
   @ApiResponse({status:200, description:"Course Student removed."})
   @ApiResponse({status:400, description:"Course not found."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   async leave(@Req() request: Request, @Param('id') id: string) {
     const user = await request['user']
     return this.classStudentsService.remove(user.id, id);

@@ -4,7 +4,7 @@ import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TeacherGuard } from '../users/teacher.guard';
-import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 
 @Controller('courses')
 export class AssignmentsController {
@@ -12,6 +12,7 @@ export class AssignmentsController {
 
   @Post("/assignment/:courseid")
   @UseGuards(TeacherGuard)
+  @ApiBearerAuth('access-token')
   @UseInterceptors(FileInterceptor("file"))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -31,7 +32,7 @@ export class AssignmentsController {
   })
   @ApiResponse({status:201, description:"Assignment added."})
   @ApiResponse({status:400, description:"Invalid request."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   create(@Param('courseid') courseid: string, @Body() createAssignmentDto: CreateAssignmentDto, @UploadedFile() file:Express.Multer.File) {
     return this.assignmentsService.create(courseid, createAssignmentDto, file);
   }
@@ -49,18 +50,23 @@ export class AssignmentsController {
     description: "JSON structure to update assignment"
   })
   @UseGuards(TeacherGuard)
+  @ApiBearerAuth('access-token')
+  @UseInterceptors(FileInterceptor("file"))
   @ApiResponse({status:200, description:"Assignment updated."})
   @ApiResponse({status:400, description:"Invalid request."})
-  @ApiResponse({status:403, description:"Unauthorized."})
-  update(@Param('id') id: string, @Body() updateAssignmentDto: UpdateAssignmentDto) {
-    return this.assignmentsService.update(id, updateAssignmentDto);
+  @ApiResponse({status:401, description:"Unauthorized."})
+  update(@Param('id') id: string, @Body() updateAssignmentDto: UpdateAssignmentDto, @UploadedFile() file:Express.Multer.File) {
+    console.log(updateAssignmentDto)
+    return this.assignmentsService.update(id, updateAssignmentDto, file);
   }
 
   @Delete('/assignment/:id')
   @UseGuards(TeacherGuard)
+  
+  @ApiBearerAuth('access-token')
   @ApiResponse({status:200, description:"Assignment updated."})
   @ApiResponse({status:400, description:"Course not found."})
-  @ApiResponse({status:403, description:"Unauthorized."})
+  @ApiResponse({status:401, description:"Unauthorized."})
   remove(@Param('id') id: string) {
     return this.assignmentsService.remove(id);
   }

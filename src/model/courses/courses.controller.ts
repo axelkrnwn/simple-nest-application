@@ -4,7 +4,7 @@ import { AddCourseDTO } from './dtos/add-course.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserGuard } from '../users/users.guard';
 import { Request } from 'express';
-import { ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
 import { TeacherGuard } from '../users/teacher.guard';
 
 @Controller('courses')
@@ -14,6 +14,7 @@ export class CoursesController {
 
     @Post()
     @UseGuards(TeacherGuard)
+    @ApiBearerAuth('access-token')
     @UseInterceptors(FileInterceptor('image'))
     @ApiConsumes('multipart/form-data')
       @ApiBody({
@@ -22,7 +23,7 @@ export class CoursesController {
             properties: {
               title: { type: 'string' },
               description: { type: 'string' },
-              file: {
+              image: {
                 type: 'string',
                 format: 'binary',
               },
@@ -32,7 +33,7 @@ export class CoursesController {
       })
       @ApiResponse({status:201, description:"Course has successfully created."})
       @ApiResponse({status:400, description:"Course validation not satisfied."})
-      @ApiResponse({status:403, description:"Unauthorized user"})
+      @ApiResponse({status:401, description:"Unauthorized user"})
     async addCourse(@Req() request:Request, @Body() dto:AddCourseDTO, @UploadedFile() image:Express.Multer.File){
         const user = await request['user']
         try {
@@ -52,6 +53,19 @@ export class CoursesController {
     async getCourses(){
         return await this.courseService.getAllCourse()
     }
+    @Get('/user')
+    @UseGuards(UserGuard)
+    @ApiBearerAuth('access-token')
+    @ApiResponse({status:200, description:"Course has successfully fetched."})
+    @ApiResponse({status:400, description:"Course not found."})
+    @ApiResponse({status:401, description:"Unauthorized."})
+    async getCourseByTeacher(@Req() request:Request){
+        const user = await request['user']
+        console.log('here')
+        console.log(user)
+        let course = await this.courseService.getCourseByTeacher(user.id)
+        return course
+    }
     
     @Get(':id')
     @ApiResponse({status:200, description:"Course has successfully fetched."})
@@ -60,4 +74,5 @@ export class CoursesController {
         let course = await this.courseService.getCourse(params.id)
         return course
     }
+    
 }
