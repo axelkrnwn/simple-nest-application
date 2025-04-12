@@ -8,8 +8,8 @@ export declare class SubmissionsService {
     private submissionRepository;
     private assignmentRepository;
     constructor(submissionRepository: Repository<Submission>, assignmentRepository: Repository<Assignment>);
-    create(id: string | undefined, user: User, assignmentId: string, dto: CreateSubmissionDto, file: Express.Multer.File): Promise<Submission | import("typeorm").UpdateResult>;
-    findAll(assignmentid: string): Promise<Submission | null>;
+    create(id: string | undefined, user: User, assignmentId: string, dto: CreateSubmissionDto, file: Express.Multer.File): Promise<import("typeorm").UpdateResult | Submission>;
+    findAll(assignmentid: string): Promise<Submission[]>;
     findOne(id: string): Promise<Submission | null>;
     update(id: string, updateSubmissionDto: UpdateSubmissionDto): Promise<Submission>;
     remove(id: string): Promise<import("typeorm").DeleteResult>;

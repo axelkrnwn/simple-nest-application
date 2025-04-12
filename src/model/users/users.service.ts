@@ -32,6 +32,7 @@ export class UsersService {
         console.log('here')
         const newUser = this.userRepository.create({...dto, password: await Hasher.hash(dto.password)})
 
+        this.cacheManager.clear()
         return await this.userRepository.save(newUser)
     }
 
@@ -73,6 +74,7 @@ export class UsersService {
     }
 
     async remove(id: string) {
+        this.cacheManager.clear()
         return await this.userRepository.delete(id)
     }
 

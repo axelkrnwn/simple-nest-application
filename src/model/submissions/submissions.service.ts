@@ -26,7 +26,7 @@ export class SubmissionsService {
     }
     const asg = await this.assignmentRepository.findOne({where:{id:assignmentId}})
     const currentDate = new Date();
-    
+
     if (!asg) throw new BadRequestException("Assignment not found")
     if (asg.deadline.getTime() < currentDate.getTime()){
       throw new BadRequestException("Deadline has been exceeded")
@@ -48,7 +48,7 @@ export class SubmissionsService {
   }
 
   async findAll(assignmentid: string) {
-    return await this.submissionRepository.findOne({where:{assignment:{id:assignmentid}}});
+    return await this.submissionRepository.find({where:{assignment:{id:assignmentid}}, relations:['user', 'assignment']});
   }
 
   async findOne(id: string) {

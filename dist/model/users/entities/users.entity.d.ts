@@ -6,5 +6,6 @@ export declare class User {
     role: string;
     address: string;
     password: string;
+    isDeleted: boolean;
     classes: ClassStudent[];
 }

@@ -16,6 +16,8 @@ export class User {
     address: string;
     @Column()
     password: string;
+    @Column({nullable: true})
+    isDeleted: boolean;
 
     @OneToMany(() => ClassStudent, c => c.student, {cascade: true})
     @JoinColumn()

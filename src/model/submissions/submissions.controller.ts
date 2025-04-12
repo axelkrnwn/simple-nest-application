@@ -53,7 +53,7 @@ export class SubmissionsController {
       }
   }
 
-  @Get(':assignmentid')
+  @Get(':assignmentid/submission')
   @UseGuards(TeacherGuard)
   
   @ApiBearerAuth('access-token')

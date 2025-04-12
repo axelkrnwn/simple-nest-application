@@ -87,7 +87,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SubmissionsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(':assignmentid'),
+    (0, common_1.Get)(':assignmentid/submission'),
     (0, common_1.UseGuards)(teacher_guard_1.TeacherGuard),
     (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, swagger_1.ApiResponse)({ status: 200, description: "Submissions fetched." }),

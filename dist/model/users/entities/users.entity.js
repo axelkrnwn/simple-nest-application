@@ -19,6 +19,7 @@ let User = class User {
     role;
     address;
     password;
+    isDeleted;
     classes;
 };
 exports.User = User;
@@ -46,6 +47,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Boolean)
+], User.prototype, "isDeleted", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => class_student_entity_1.ClassStudent, c => c.student, { cascade: true }),
     (0, typeorm_1.JoinColumn)(),

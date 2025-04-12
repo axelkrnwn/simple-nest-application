@@ -54,7 +54,7 @@ let SubmissionsService = class SubmissionsService {
         return await this.submissionRepository.save(newSubmission);
     }
     async findAll(assignmentid) {
-        return await this.submissionRepository.findOne({ where: { assignment: { id: assignmentid } } });
+        return await this.submissionRepository.find({ where: { assignment: { id: assignmentid } }, relations: ['user', 'assignment'] });
     }
     async findOne(id) {
         return await this.submissionRepository.findOne({ where: { id: id } });
