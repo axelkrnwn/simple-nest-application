@@ -9,5 +9,4 @@ export declare class SubmissionsController {
     findAll(assignmentid: string): Promise<import("./entities/submission.entity").Submission[]>;
     findOne(id: string): Promise<import("./entities/submission.entity").Submission | null>;
     update(id: string, updateSubmissionDto: UpdateSubmissionDto): Promise<import("./entities/submission.entity").Submission>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

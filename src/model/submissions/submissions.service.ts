@@ -85,8 +85,4 @@ export class SubmissionsService {
       data,
     );
   }
-
-  async remove(id: string) {
-    return await this.submissionRepository.delete(id)
-  }
 }

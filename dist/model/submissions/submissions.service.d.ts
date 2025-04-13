@@ -15,5 +15,4 @@ export declare class SubmissionsService {
     findOne(id: string): Promise<Submission | null>;
     findByAssignmentUser(userId: string, assignmentId: string): Promise<Submission | null>;
     update(id: string, updateSubmissionDto: UpdateSubmissionDto): Promise<Submission>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

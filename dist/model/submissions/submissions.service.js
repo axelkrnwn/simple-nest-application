@@ -83,9 +83,6 @@ let SubmissionsService = class SubmissionsService {
         }
         return await this.submissionRepository.save(data);
     }
-    async remove(id) {
-        return await this.submissionRepository.delete(id);
-    }
 };
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([

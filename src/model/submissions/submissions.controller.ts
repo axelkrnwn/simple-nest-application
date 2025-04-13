@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { SubmissionsService } from './submissions.service';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { UpdateSubmissionDto } from './dto/update-submission.dto';
 import { UserGuard } from '../users/users.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TeacherGuard } from '../users/teacher.guard';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('courses')
 export class SubmissionsController {
@@ -26,7 +26,7 @@ export class SubmissionsController {
   }
 
   @Post(':assignmentid/submission')
-  @Post(':assignmentid/submission/:id')
+  // @Post(':assignmentid/submission/:id')
   @UseGuards(UserGuard)
   @ApiBearerAuth('access-token')
   @UseInterceptors(FileInterceptor('file'))
@@ -43,6 +43,12 @@ export class SubmissionsController {
       },
       description: "JSON Structure to create course object."
   })
+  @ApiQuery({
+    name: "id",
+    type: String,
+    description: "Just an optional Submission Id",
+    required: false
+  })
   @ApiResponse({status:201, description:"Assignment completed."})
   @ApiResponse({status:400, description:"Invalid request."})
   @ApiResponse({status:401, description:"Unauthorized."})
@@ -51,7 +57,7 @@ export class SubmissionsController {
     @Param('assignmentid') assignmentid: string, 
     @Body() createSubmissionDto: CreateSubmissionDto, 
     @UploadedFile() file:Express.Multer.File,
-    @Param('id') id?: string, 
+    @Query('id') id?: string, 
     ) {
       try {
         console.log(id)
@@ -101,15 +107,5 @@ export class SubmissionsController {
   update(@Param('id') id: string, @Body() updateSubmissionDto: UpdateSubmissionDto) {
     return this.submissionsService.update(id, updateSubmissionDto);
   }
-  
-  @Delete('submission/:id')
-  @UseGuards(UserGuard)
-  
-  @ApiBearerAuth('access-token')
-  @ApiResponse({status:200, description:"Submission deleted."})
-  @ApiResponse({status:400, description:"Not found."})
-  @ApiResponse({status:401, description:"Unauthorized."})
-  remove(@Param('id') id: string) {
-    return this.submissionsService.remove(id);
-  }
+ 
 }

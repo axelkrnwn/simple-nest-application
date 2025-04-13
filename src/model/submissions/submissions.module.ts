@@ -15,7 +15,7 @@ import { ClassStudent } from '../class-students/entities/class-student.entity';
         destination: './uploads/submissions',
         filename: (req, file, cb) => {
           console.log(req.params)
-          const filename = `${Date.now()}-${req['user'].id}-${req.params['assignmentid']}-${file.originalname}`;
+          const filename = `${Date.now()}-${req.params['assignmentid']}-${file.originalname}`;
           cb(null, filename);
         },
       }),

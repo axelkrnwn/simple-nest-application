@@ -55,9 +55,6 @@ let SubmissionsController = class SubmissionsController {
     update(id, updateSubmissionDto) {
         return this.submissionsService.update(id, updateSubmissionDto);
     }
-    remove(id) {
-        return this.submissionsService.remove(id);
-    }
 };
 exports.SubmissionsController = SubmissionsController;
 __decorate([
@@ -75,7 +72,6 @@ __decorate([
 ], SubmissionsController.prototype, "findSubmission", null);
 __decorate([
     (0, common_1.Post)(':assignmentid/submission'),
-    (0, common_1.Post)(':assignmentid/submission/:id'),
     (0, common_1.UseGuards)(users_guard_1.UserGuard),
     (0, swagger_1.ApiBearerAuth)('access-token'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
@@ -92,6 +88,12 @@ __decorate([
         },
         description: "JSON Structure to create course object."
     }),
+    (0, swagger_1.ApiQuery)({
+        name: "id",
+        type: String,
+        description: "Just an optional Submission Id",
+        required: false
+    }),
     (0, swagger_1.ApiResponse)({ status: 201, description: "Assignment completed." }),
     (0, swagger_1.ApiResponse)({ status: 400, description: "Invalid request." }),
     (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
@@ -99,7 +101,7 @@ __decorate([
     __param(1, (0, common_1.Param)('assignmentid')),
     __param(2, (0, common_1.Body)()),
     __param(3, (0, common_1.UploadedFile)()),
-    __param(4, (0, common_1.Param)('id')),
+    __param(4, (0, common_1.Query)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Request, String, create_submission_dto_1.CreateSubmissionDto, Object, String]),
     __metadata("design:returntype", Promise)
@@ -144,18 +146,6 @@ __decorate([
     __metadata("design:paramtypes", [String, update_submission_dto_1.UpdateSubmissionDto]),
     __metadata("design:returntype", void 0)
 ], SubmissionsController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)('submission/:id'),
-    (0, common_1.UseGuards)(users_guard_1.UserGuard),
-    (0, swagger_1.ApiBearerAuth)('access-token'),
-    (0, swagger_1.ApiResponse)({ status: 200, description: "Submission deleted." }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: "Not found." }),
-    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], SubmissionsController.prototype, "remove", null);
 exports.SubmissionsController = SubmissionsController = __decorate([
     (0, common_1.Controller)('courses'),
     __metadata("design:paramtypes", [submissions_service_1.SubmissionsService])
