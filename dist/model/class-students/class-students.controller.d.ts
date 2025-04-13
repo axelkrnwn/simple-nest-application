@@ -9,5 +9,5 @@ export declare class ClassStudentsController {
     findByUser(request: Request): Promise<import("./entities/class-student.entity").ClassStudent[]>;
     findByCourse(id: string): Promise<import("./entities/class-student.entity").ClassStudent[]>;
     update(id: string, updateClassStudentDto: UpdateClassStudentDto): Promise<import("./entities/class-student.entity").ClassStudent>;
-    leave(request: Request, id: string): Promise<import("typeorm").UpdateResult>;
+    leave(request: Request, id: string): Promise<import("typeorm").DeleteResult>;
 }

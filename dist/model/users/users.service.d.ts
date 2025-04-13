@@ -15,5 +15,6 @@ export declare class UsersService {
     }>;
     getAllUser(): Promise<unknown>;
     getUser(userId: string): Promise<unknown>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
+    remove(id: string): Promise<import("typeorm").UpdateResult>;
+    restore(id: string): Promise<import("typeorm").UpdateResult>;
 }

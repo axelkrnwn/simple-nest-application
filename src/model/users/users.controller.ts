@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { LoginDTO } from './dtos/login.dto';
 import { UserGuard } from './users.guard';
 import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { AdminGuard } from './admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -12,6 +13,7 @@ export class UsersController {
     }
 
     @Get()
+    @UseGuards(AdminGuard)
     @ApiResponse({ status: 200, description: 'The users has been successfully fetched.'})
     getUsers(){
         return this.userService.getAllUser()

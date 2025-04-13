@@ -43,7 +43,8 @@ let ClassStudentsService = class ClassStudentsService {
     async findByUser(userId) {
         return await this.repo.find({ where: { studentId: userId }, relations: {
                 course: {
-                    teacher: true
+                    teacher: true,
+                    assignments: true
                 }
             } });
     }
@@ -65,7 +66,7 @@ let ClassStudentsService = class ClassStudentsService {
         return await this.repo.save(updated);
     }
     async remove(userId, courseId) {
-        return await this.repo.softDelete({ courseId: courseId, studentId: userId });
+        return await this.repo.delete({ courseId: courseId, studentId: userId });
     }
 };
 exports.ClassStudentsService = ClassStudentsService;

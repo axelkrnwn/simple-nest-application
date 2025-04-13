@@ -11,6 +11,20 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiResponse } from '@nestjs/swagge
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
 
+  @Get(':assignmentid/me')
+  @UseGuards(UserGuard)
+  
+  @ApiBearerAuth('access-token')
+  @ApiResponse({status:200, description:"Submissions fetched."})
+  @ApiResponse({status:400, description:"Invalid request."})
+  @ApiResponse({status:401, description:"Unauthorized."})
+  async findSubmission(@Req() request:Request, @Param('assignmentid') assignmentid: string) {
+    const user = await request['user']
+    console.log("fetching", user.id)
+
+    return this.submissionsService.findByAssignmentUser(user.id,assignmentid);
+  }
+
   @Post(':assignmentid/submission')
   @Post(':assignmentid/submission/:id')
   @UseGuards(UserGuard)

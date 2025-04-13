@@ -59,6 +59,9 @@ let UsersService = class UsersService {
         if (!verify) {
             throw new Error("Password incorrect");
         }
+        if (users.isDeleted) {
+            throw new Error("User cannot be used to login");
+        }
         console.log(users.id);
         const payload = { id: users.id, role: users.role, username: users.username };
         return {
@@ -68,7 +71,7 @@ let UsersService = class UsersService {
     async getAllUser() {
         let value = await this.cacheManager.get('user');
         if (!value) {
-            value = await this.userRepository.find();
+            value = await this.userRepository.find({ withDeleted: true });
             await this.cacheManager.set('user', value);
         }
         return value;
@@ -84,7 +87,11 @@ let UsersService = class UsersService {
     }
     async remove(id) {
         this.cacheManager.clear();
-        return await this.userRepository.delete(id);
+        return await this.userRepository.update(id, { isDeleted: true });
+    }
+    async restore(id) {
+        this.cacheManager.clear();
+        return await this.userRepository.update(id, { isDeleted: false });
     }
 };
 exports.UsersService = UsersService;

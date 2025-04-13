@@ -11,5 +11,5 @@ export declare class ClassStudentsService {
     findByUser(userId: string): Promise<ClassStudent[]>;
     findByCourse(courseId: string): Promise<ClassStudent[]>;
     update(id: string, dto: UpdateClassStudentDto): Promise<ClassStudent>;
-    remove(userId: string, courseId: string): Promise<import("typeorm").UpdateResult>;
+    remove(userId: string, courseId: string): Promise<import("typeorm").DeleteResult>;
 }

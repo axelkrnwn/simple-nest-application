@@ -17,13 +17,16 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const submission_entity_1 = require("./entities/submission.entity");
 const typeorm_2 = require("@nestjs/typeorm");
+const class_student_entity_1 = require("../class-students/entities/class-student.entity");
 const assignment_entity_1 = require("../assignments/entities/assignment.entity");
 let SubmissionsService = class SubmissionsService {
     submissionRepository;
     assignmentRepository;
-    constructor(submissionRepository, assignmentRepository) {
+    studentRepository;
+    constructor(submissionRepository, assignmentRepository, studentRepository) {
         this.submissionRepository = submissionRepository;
         this.assignmentRepository = assignmentRepository;
+        this.studentRepository = studentRepository;
     }
     async create(id, user, assignmentId, dto, file) {
         if (!file) {
@@ -57,7 +60,10 @@ let SubmissionsService = class SubmissionsService {
         return await this.submissionRepository.find({ where: { assignment: { id: assignmentid } }, relations: ['user', 'assignment'] });
     }
     async findOne(id) {
-        return await this.submissionRepository.findOne({ where: { id: id } });
+        return await this.submissionRepository.findOne({ where: { id: id }, relations: { assignment: { course: true }, user: true } });
+    }
+    async findByAssignmentUser(userId, assignmentId) {
+        return await this.submissionRepository.findOne({ where: { user: { id: userId }, assignment: { id: assignmentId } } });
     }
     async update(id, updateSubmissionDto) {
         const updated = await this.findOne(id);
@@ -65,6 +71,16 @@ let SubmissionsService = class SubmissionsService {
             throw new Error("assignment not found!");
         }
         const data = this.submissionRepository.merge(updated, updateSubmissionDto);
+        const track = await this.studentRepository.findOne({
+            where: {
+                studentId: updated.user.id,
+                courseId: updated.assignment.course.id
+            }
+        });
+        if (track) {
+            track.progress += updateSubmissionDto.score;
+            await this.studentRepository.save(track);
+        }
         return await this.submissionRepository.save(data);
     }
     async remove(id) {
@@ -76,7 +92,9 @@ exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(submission_entity_1.Submission)),
     __param(1, (0, typeorm_2.InjectRepository)(assignment_entity_1.Assignment)),
+    __param(2, (0, typeorm_2.InjectRepository)(class_student_entity_1.ClassStudent)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
+        typeorm_1.Repository,
         typeorm_1.Repository])
 ], SubmissionsService);
 //# sourceMappingURL=submissions.service.js.map

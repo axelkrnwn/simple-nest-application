@@ -36,7 +36,8 @@ export class ClassStudentsService {
   async findByUser(userId:string){
     return await this.repo.find({where:{studentId:userId}, relations:{
       course: {
-        teacher: true
+        teacher: true,
+        assignments: true
       }
     }})
   }
@@ -60,6 +61,6 @@ export class ClassStudentsService {
   }
 
   async remove(userId: string, courseId: string) {
-    return await this.repo.softDelete({courseId:courseId, studentId:userId})
+    return await this.repo.delete({courseId:courseId, studentId:userId})
   }
 }

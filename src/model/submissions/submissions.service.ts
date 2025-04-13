@@ -12,12 +12,12 @@ import { Assignment } from '../assignments/entities/assignment.entity';
 export class SubmissionsService {
   constructor(@InjectRepository(Submission) private submissionRepository:Repository<Submission>,
   @InjectRepository(Assignment) private assignmentRepository:Repository<Assignment>,
-  // @InjectRepository(ClassStudent) private studentRepository:Repository<ClassStudent>
+  @InjectRepository(ClassStudent) private studentRepository:Repository<ClassStudent>
 ){}
 
   async create(id:string | undefined, user:User, assignmentId:string, dto: CreateSubmissionDto, file:Express.Multer.File) {
     if (!file) {
-            throw new BadRequestException('no file uploaded');
+      throw new BadRequestException('no file uploaded');
     }
     const maxSize = 100 * 1024 * 1024;
     if (
@@ -52,7 +52,11 @@ export class SubmissionsService {
   }
 
   async findOne(id: string) {
-    return await this.submissionRepository.findOne({where:{id:id}});
+    return await this.submissionRepository.findOne({where:{id:id}, relations:{assignment:{course:true},user:true}});
+  }
+
+  async findByAssignmentUser(userId:string, assignmentId:string){
+    return await this.submissionRepository.findOne({where:{user:{id:userId}, assignment:{id:assignmentId}}})
   }
 
   async update(id: string, updateSubmissionDto: UpdateSubmissionDto) {
@@ -65,6 +69,18 @@ export class SubmissionsService {
       updated,
       updateSubmissionDto,
     );
+
+    const track = await this.studentRepository.findOne({
+      where:{
+        studentId:updated.user.id, 
+        courseId:updated.assignment.course.id
+      }
+    })
+    if (track){
+        track.progress += updateSubmissionDto.score
+        await this.studentRepository.save(track)
+    }
+
     return await this.submissionRepository.save(
       data,
     );

@@ -19,6 +19,7 @@ const users_service_1 = require("./users.service");
 const login_dto_1 = require("./dtos/login.dto");
 const users_guard_1 = require("./users.guard");
 const swagger_1 = require("@nestjs/swagger");
+const admin_guard_1 = require("./admin.guard");
 let UsersController = class UsersController {
     userService;
     constructor(userService) {
@@ -66,6 +67,7 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)(admin_guard_1.AdminGuard),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'The users has been successfully fetched.' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

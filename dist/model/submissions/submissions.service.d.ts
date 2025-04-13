@@ -3,14 +3,17 @@ import { UpdateSubmissionDto } from './dto/update-submission.dto';
 import { Repository } from 'typeorm';
 import { Submission } from './entities/submission.entity';
 import { User } from '../users/entities/users.entity';
+import { ClassStudent } from '../class-students/entities/class-student.entity';
 import { Assignment } from '../assignments/entities/assignment.entity';
 export declare class SubmissionsService {
     private submissionRepository;
     private assignmentRepository;
-    constructor(submissionRepository: Repository<Submission>, assignmentRepository: Repository<Assignment>);
-    create(id: string | undefined, user: User, assignmentId: string, dto: CreateSubmissionDto, file: Express.Multer.File): Promise<import("typeorm").UpdateResult | Submission>;
+    private studentRepository;
+    constructor(submissionRepository: Repository<Submission>, assignmentRepository: Repository<Assignment>, studentRepository: Repository<ClassStudent>);
+    create(id: string | undefined, user: User, assignmentId: string, dto: CreateSubmissionDto, file: Express.Multer.File): Promise<Submission | import("typeorm").UpdateResult>;
     findAll(assignmentid: string): Promise<Submission[]>;
     findOne(id: string): Promise<Submission | null>;
+    findByAssignmentUser(userId: string, assignmentId: string): Promise<Submission | null>;
     update(id: string, updateSubmissionDto: UpdateSubmissionDto): Promise<Submission>;
     remove(id: string): Promise<import("typeorm").DeleteResult>;
 }

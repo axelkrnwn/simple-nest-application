@@ -26,6 +26,11 @@ let SubmissionsController = class SubmissionsController {
     constructor(submissionsService) {
         this.submissionsService = submissionsService;
     }
+    async findSubmission(request, assignmentid) {
+        const user = await request['user'];
+        console.log("fetching", user.id);
+        return this.submissionsService.findByAssignmentUser(user.id, assignmentid);
+    }
     async create(request, assignmentid, createSubmissionDto, file, id) {
         try {
             console.log(id);
@@ -55,6 +60,19 @@ let SubmissionsController = class SubmissionsController {
     }
 };
 exports.SubmissionsController = SubmissionsController;
+__decorate([
+    (0, common_1.Get)(':assignmentid/me'),
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
+    (0, swagger_1.ApiResponse)({ status: 200, description: "Submissions fetched." }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: "Invalid request." }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: "Unauthorized." }),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('assignmentid')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Request, String]),
+    __metadata("design:returntype", Promise)
+], SubmissionsController.prototype, "findSubmission", null);
 __decorate([
     (0, common_1.Post)(':assignmentid/submission'),
     (0, common_1.Post)(':assignmentid/submission/:id'),

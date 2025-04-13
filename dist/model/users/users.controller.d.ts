@@ -10,5 +10,5 @@ export declare class UsersController {
         access_token: string;
     }>;
     me(request: Request): Promise<unknown>;
-    remove(id: string): Promise<import("typeorm").DeleteResult>;
+    remove(id: string): Promise<import("typeorm").UpdateResult>;
 }

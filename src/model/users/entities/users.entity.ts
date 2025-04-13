@@ -1,5 +1,5 @@
 import { ClassStudent } from "src/model/class-students/entities/class-student.entity";
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name: 'users'})
 export class User {
@@ -16,7 +16,8 @@ export class User {
     address: string;
     @Column()
     password: string;
-    @Column({nullable: true})
+
+    @Column({default:0})
     isDeleted: boolean;
 
     @OneToMany(() => ClassStudent, c => c.student, {cascade: true})
