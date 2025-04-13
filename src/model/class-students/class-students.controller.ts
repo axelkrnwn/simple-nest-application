@@ -4,7 +4,6 @@ import { CreateClassStudentDto } from './dto/create-class-student.dto';
 import { UpdateClassStudentDto } from './dto/update-class-student.dto';
 import { UserGuard } from '../users/users.guard';
 import { Request } from 'express';
-import { TeacherGuard } from '../users/teacher.guard';
 import { ApiBearerAuth, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 @Controller('class-students')
@@ -33,7 +32,8 @@ export class ClassStudentsController {
   @ApiResponse({status:401, description:"Unauthorized."})
   async findByUser(@Req() request:Request){
     const user = await request['user']
-    return this.classStudentsService.findByUser(user.id)
+    console.log('user: ', user.id)
+    return this.classStudentsService.findByUser(user)
   }
   @Get('/course/:id')
   @UseGuards(UserGuard)

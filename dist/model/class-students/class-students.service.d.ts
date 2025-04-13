@@ -8,7 +8,7 @@ export declare class ClassStudentsService {
     constructor(repo: Repository<ClassStudent>);
     create(user: User, dto: CreateClassStudentDto): Promise<ClassStudent>;
     find(userId: string, courseId: string): Promise<ClassStudent | null>;
-    findByUser(userId: string): Promise<ClassStudent[]>;
+    findByUser(user: User): Promise<ClassStudent[]>;
     findByCourse(courseId: string): Promise<ClassStudent[]>;
     update(id: string, dto: UpdateClassStudentDto): Promise<ClassStudent>;
     remove(userId: string, courseId: string): Promise<import("typeorm").DeleteResult>;

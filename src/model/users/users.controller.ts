@@ -80,6 +80,14 @@ export class UsersController {
     remove(@Param('id') id: string) {
     return this.userService.remove(id);
     }
+    @UseGuards(UserGuard)
+    @ApiBearerAuth('access-token')
+    @Delete(':id/restore')
+    @ApiResponse({ status: 201, description: 'The user has been successfully deleted.'})
+    @ApiResponse({ status: 400, description: 'There is a validation that is not satisfied.'})
+    restore(@Param('id') id: string) {
+    return this.userService.restore(id);
+    }
 
 
 }

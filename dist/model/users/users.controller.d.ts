@@ -11,4 +11,5 @@ export declare class UsersController {
     }>;
     me(request: Request): Promise<unknown>;
     remove(id: string): Promise<import("typeorm").UpdateResult>;
+    restore(id: string): Promise<import("typeorm").UpdateResult>;
 }

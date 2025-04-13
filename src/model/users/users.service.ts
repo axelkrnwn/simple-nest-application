@@ -67,7 +67,7 @@ export class UsersService {
     
     async getUser(userId:string){
         console.log(userId)
-        
+         
         let value = await this.cacheManager.get('user:'+userId);
         if (!value){
             value = await this.userRepository.findOneBy({id:userId})

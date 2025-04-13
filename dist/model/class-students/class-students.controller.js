@@ -30,7 +30,8 @@ let ClassStudentsController = class ClassStudentsController {
     }
     async findByUser(request) {
         const user = await request['user'];
-        return this.classStudentsService.findByUser(user.id);
+        console.log('user: ', user.id);
+        return this.classStudentsService.findByUser(user);
     }
     async findByCourse(id) {
         return this.classStudentsService.findByCourse(id);

@@ -63,6 +63,9 @@ let UsersController = class UsersController {
     remove(id) {
         return this.userService.remove(id);
     }
+    restore(id) {
+        return this.userService.restore(id);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -122,6 +125,17 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "remove", null);
+__decorate([
+    (0, common_1.UseGuards)(users_guard_1.UserGuard),
+    (0, swagger_1.ApiBearerAuth)('access-token'),
+    (0, common_1.Delete)(':id/restore'),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'The user has been successfully deleted.' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'There is a validation that is not satisfied.' }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "restore", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

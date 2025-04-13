@@ -33,8 +33,18 @@ export class ClassStudentsService {
     return await this.repo.findOne({where:{studentId:userId, courseId:courseId}})
   }
 
-  async findByUser(userId:string){
-    return await this.repo.find({where:{studentId:userId}, relations:{
+  async findByUser(user:User){
+    if (user.role == 'admin'){
+      return await this.repo.find({relations:{
+        course: {
+          teacher: true,
+          assignments: {
+            submissions:true
+          }
+        }
+      }})
+    }
+    return await this.repo.find({where:{studentId:user.id}, relations:{
       course: {
         teacher: true,
         assignments: true
