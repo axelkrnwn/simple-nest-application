@@ -71,7 +71,7 @@ let UsersService = class UsersService {
     async getAllUser() {
         let value = await this.cacheManager.get('user');
         if (!value) {
-            value = await this.userRepository.find({ withDeleted: true });
+            value = await this.userRepository.find({ withDeleted: true, where: { role: (0, typeorm_2.Not)('admin') } });
             await this.cacheManager.set('user', value);
         }
         return value;

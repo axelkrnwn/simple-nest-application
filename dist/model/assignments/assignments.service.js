@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const assignment_entity_1 = require("./entities/assignment.entity");
 const typeorm_2 = require("typeorm");
+const submission_entity_1 = require("../submissions/entities/submission.entity");
 let AssignmentsService = class AssignmentsService {
     assignmentRepository;
-    constructor(assignmentRepository) {
+    submissionRepository;
+    constructor(assignmentRepository, submissionRepository) {
         this.assignmentRepository = assignmentRepository;
+        this.submissionRepository = submissionRepository;
     }
     async create(courseId, dto, file) {
         if (dto.title.length < 5 || dto.title.length > 50) {
@@ -62,11 +65,18 @@ let AssignmentsService = class AssignmentsService {
             file.size > maxSize) {
             throw new common_1.BadRequestException('file is too large!');
         }
-        updated.attachment = file.path;
+        if (file) {
+            updated.attachment = file.path;
+        }
         const data = this.assignmentRepository.merge(updated, updateAssignmentDto);
         return await this.assignmentRepository.save(data);
     }
     async remove(id) {
+        const submission = await this.submissionRepository.findBy({ score: (0, typeorm_2.Not)((0, typeorm_2.IsNull)()), assignment: { id: id } });
+        console.log(submission);
+        if (submission.length > 0) {
+            throw new common_1.BadRequestException('Assignment cant be deleted! already has a graded submission');
+        }
         return await this.assignmentRepository.delete(id);
     }
 };
@@ -74,6 +84,8 @@ exports.AssignmentsService = AssignmentsService;
 exports.AssignmentsService = AssignmentsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(assignment_entity_1.Assignment)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(submission_entity_1.Submission)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], AssignmentsService);
 //# sourceMappingURL=assignments.service.js.map

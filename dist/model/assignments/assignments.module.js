@@ -14,13 +14,14 @@ const assignment_entity_1 = require("./entities/assignment.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
+const submission_entity_1 = require("../submissions/entities/submission.entity");
 let AssignmentsModule = class AssignmentsModule {
 };
 exports.AssignmentsModule = AssignmentsModule;
 exports.AssignmentsModule = AssignmentsModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([assignment_entity_1.Assignment]),
+            typeorm_1.TypeOrmModule.forFeature([assignment_entity_1.Assignment, submission_entity_1.Submission]),
             platform_express_1.MulterModule.register({
                 storage: (0, multer_1.diskStorage)({
                     destination: './uploads/assignments',

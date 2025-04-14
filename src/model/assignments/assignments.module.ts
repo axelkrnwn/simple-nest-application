@@ -5,10 +5,11 @@ import { Assignment } from './entities/assignment.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Submission } from '../submissions/entities/submission.entity';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Assignment]),
+    TypeOrmModule.forFeature([Assignment, Submission]),
      MulterModule.register({
               storage: diskStorage({
                 destination: './uploads/assignments',

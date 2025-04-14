@@ -54,7 +54,9 @@ let ClassStudentsService = class ClassStudentsService {
         return await this.repo.find({ where: { studentId: user.id }, relations: {
                 course: {
                     teacher: true,
-                    assignments: true
+                    assignments: {
+                        course: true
+                    }
                 }
             } });
     }

@@ -3,11 +3,15 @@ import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Assignment } from './entities/assignment.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
+import { Submission } from '../submissions/entities/submission.entity';
 
 @Injectable()
 export class AssignmentsService {
-  constructor(@InjectRepository(Assignment) private assignmentRepository:Repository<Assignment>){}
+  constructor(
+    @InjectRepository(Assignment) private assignmentRepository:Repository<Assignment>,
+    @InjectRepository(Submission) private submissionRepository:Repository<Submission>
+  ){}
 
   async create(courseId:string, dto: CreateAssignmentDto, file:Express.Multer.File) {
     if (dto.title.length < 5 || dto.title.length > 50){
@@ -51,19 +55,26 @@ export class AssignmentsService {
     if (file &&
         file.size > maxSize) {
         throw new BadRequestException('file is too large!');
-    }
-    updated.attachment = file.path
-    
-    const data = this.assignmentRepository.merge(
-      updated,
-      updateAssignmentDto,
-    );
+      }
+      if (file){
+        updated.attachment = file.path
+      }
+      
+      const data = this.assignmentRepository.merge(
+        updated,
+        updateAssignmentDto,
+      );
     return await this.assignmentRepository.save(
       data,
     );
   }
 
   async remove(id: string) {
+    const submission = await this.submissionRepository.findBy({score:Not(IsNull()),assignment:{id:id}})
+    console.log(submission)
+    if (submission.length > 0){
+      throw new BadRequestException('Assignment cant be deleted! already has a graded submission');
+    }
     return await this.assignmentRepository.delete(id)
   }
 }

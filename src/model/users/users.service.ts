@@ -5,7 +5,7 @@ import { CreateUserDTO } from './dtos/create-user.dto';
 import { Hasher } from 'src/util/hash';
 import { LoginDTO } from './dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class UsersService {
     async getAllUser(){
         let value = await this.cacheManager.get('user');
         if (!value){
-            value = await this.userRepository.find({withDeleted: true})
+            value = await this.userRepository.find({withDeleted: true, where:{role:Not('admin')}})
             await this.cacheManager.set('user', value);
         }
         return value;
