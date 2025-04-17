@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkasa-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: linkasa-api
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: linkasa-api
+    spec:
+      containers:
+      - name: api
+        image: techtestxkaxel.azurecr.io/backend
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - secretRef:
+            name: linkasa-backend-secret
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linkasa-db-deployment
+spec:
+  selector:
+    matchLabels:
+      app: linkasa-db
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: linkasa-db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql/mysql-server:8.0.23
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - secretRef:
+            name: linkasa-db-secret
+
+
+
+
+
+
+
