@@ -46,6 +46,37 @@ spec:
         - secretRef:
             name: linkasa-db-secret
 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkasa-api
+spec:
+  selector:
+    app: linkasa-api
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: linkasa-db
+spec:
+  selector:
+    app: linkasa-db
+  ports:
+    - protocol: TCP
+      name: db
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
 
 
 
