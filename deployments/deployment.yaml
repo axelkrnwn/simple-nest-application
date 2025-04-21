@@ -57,10 +57,9 @@ spec:
     app: linkasa-api
   ports:
     - protocol: TCP
-      name: api
       port: 80
       targetPort: 5000
-  type: LoadBalancer
+  type: ClusterIP
 
 ---
 
