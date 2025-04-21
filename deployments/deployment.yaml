@@ -12,6 +12,10 @@ spec:
       labels:
         app: linkasa-api
     spec:
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: storage
       containers:
       - name: api
         image: techtestxkaxel.azurecr.io/backend
@@ -20,7 +24,9 @@ spec:
         envFrom:
         - secretRef:
             name: linkasa-backend-secret
-
+        volumeMounts:
+        - mountPath: /uploads
+          name: storage
 ---
 
 apiVersion: apps/v1
@@ -77,6 +83,18 @@ spec:
       targetPort: 3306
   type: ClusterIP
 
+--- 
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
 
 
 
