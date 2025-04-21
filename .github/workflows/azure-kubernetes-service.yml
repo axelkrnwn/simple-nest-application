@@ -66,7 +66,7 @@ jobs:
           
       - name: Build and Push Image to ACR
         run: |
-          docker buildx build --platform=linux/arm64 -t techtestxkaxel.azurecr.io/frontend --push . --build-arg VITE_BASE_URL=http://linkasa-api --build-arg VITE_BASE_PORT=80
+          docker buildx build --platform=linux/arm64 -t techtestxkaxel.azurecr.io/backend --push .
 
   deploy:
     permissions:
