@@ -1,9 +1,9 @@
 FROM node:23-alpine
 
 WORKDIR /app
-COPY ./linkasa-backend/package*.json ./
+COPY ./package*.json ./
 RUN npm install
-COPY ./linkasa-backend .
+COPY . .
 
 
 CMD ["node", "dist/main"]
