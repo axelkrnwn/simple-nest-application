@@ -1,14 +1,4 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: shared
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
----
+
 
 apiVersion: apps/v1
 kind: Deployment
@@ -24,10 +14,6 @@ spec:
       labels:
         app: linkasa-api
     spec:
-      volumes:
-      - name: shared
-        persistentVolumeClaim:
-          claimName: shared
       containers:
       - name: api
         image: techtestxkaxel.azurecr.io/backend
@@ -36,9 +22,7 @@ spec:
         envFrom:
         - secretRef:
             name: linkasa-backend-secret
-        volumeMounts:
-        - mountPath: /uploads
-          name: shared
+        
 ---
 
 apiVersion: apps/v1
