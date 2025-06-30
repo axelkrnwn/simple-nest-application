@@ -1,3 +1,5 @@
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +22,7 @@ spec:
         envFrom:
         - secretRef:
             name: linkasa-backend-secret
-
+        
 ---
 
 apiVersion: apps/v1
@@ -57,7 +59,6 @@ spec:
     app: linkasa-api
   ports:
     - protocol: TCP
-      name: api
       port: 80
       targetPort: 5000
   type: LoadBalancer
@@ -77,8 +78,6 @@ spec:
       port: 3306
       targetPort: 3306
   type: ClusterIP
-
-
 
 
 
