@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Assignment } from './entities/assignment.entity';
 import { IsNull, Not, Repository } from 'typeorm';
 import { Submission } from '../submissions/entities/submission.entity';
+import * as supabase from '../../util/storage.client';
 
 @Injectable()
 export class AssignmentsService {
@@ -28,7 +29,9 @@ export class AssignmentsService {
         file.size > maxSize) {
         throw new BadRequestException('file is too large!');
     }
-    const newCourse = this.assignmentRepository.create({...dto, attachment:file.path, course:{id:courseId}})
+    const path = await supabase.uploadFile('assignment', file)
+
+    const newCourse = this.assignmentRepository.create({...dto, attachment:path, course:{id:courseId}})
     console.log('Saving course detail:', newCourse)
     return await this.assignmentRepository.save(newCourse)
   }
@@ -57,7 +60,8 @@ export class AssignmentsService {
         throw new BadRequestException('file is too large!');
       }
       if (file){
-        updated.attachment = file.path
+        const path = await supabase.uploadFile('assignment', file)
+        updated.attachment = path
       }
       
       const data = this.assignmentRepository.merge(

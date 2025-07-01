@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const assignment_entity_1 = require("./entities/assignment.entity");
 const typeorm_2 = require("typeorm");
 const submission_entity_1 = require("../submissions/entities/submission.entity");
+const supabase = require("../../util/storage.client");
 let AssignmentsService = class AssignmentsService {
     assignmentRepository;
     submissionRepository;
@@ -39,7 +40,8 @@ let AssignmentsService = class AssignmentsService {
         if (file.size > maxSize) {
             throw new common_1.BadRequestException('file is too large!');
         }
-        const newCourse = this.assignmentRepository.create({ ...dto, attachment: file.path, course: { id: courseId } });
+        const path = await supabase.uploadFile('assignment', file);
+        const newCourse = this.assignmentRepository.create({ ...dto, attachment: path, course: { id: courseId } });
         console.log('Saving course detail:', newCourse);
         return await this.assignmentRepository.save(newCourse);
     }
@@ -66,7 +68,8 @@ let AssignmentsService = class AssignmentsService {
             throw new common_1.BadRequestException('file is too large!');
         }
         if (file) {
-            updated.attachment = file.path;
+            const path = await supabase.uploadFile('assignment', file);
+            updated.attachment = path;
         }
         const data = this.assignmentRepository.merge(updated, updateAssignmentDto);
         return await this.assignmentRepository.save(data);

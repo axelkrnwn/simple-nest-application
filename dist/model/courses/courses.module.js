@@ -12,8 +12,6 @@ const courses_service_1 = require("./courses.service");
 const courses_controller_1 = require("./courses.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const courses_entity_1 = require("./entities/courses.entity");
-const platform_express_1 = require("@nestjs/platform-express");
-const multer_1 = require("multer");
 let CoursesModule = class CoursesModule {
 };
 exports.CoursesModule = CoursesModule;
@@ -21,16 +19,6 @@ exports.CoursesModule = CoursesModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([courses_entity_1.Course]),
-            platform_express_1.MulterModule.register({
-                storage: (0, multer_1.diskStorage)({
-                    destination: './uploads/courses',
-                    filename: (req, file, cb) => {
-                        console.log(req.body);
-                        const filename = `${Date.now()}-${req.body['title']}-${file.originalname}`;
-                        cb(null, filename);
-                    },
-                }),
-            }),
         ],
         providers: [courses_service_1.CoursesService],
         controllers: [courses_controller_1.CoursesController]

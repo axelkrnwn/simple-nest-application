@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/entities/users.entity';
 import { ClassStudent } from '../class-students/entities/class-student.entity';
 import { Assignment } from '../assignments/entities/assignment.entity';
+import * as supabase from '../../util/storage.client'
 
 @Injectable()
 export class SubmissionsService {
@@ -37,11 +38,13 @@ export class SubmissionsService {
       if (!updated){
         throw new Error("assignment not found!")
       }
-      updated.file = file.path   
+      const path = await supabase.uploadFile('submission', file)
+      updated.file = path
       return await this.submissionRepository.update(id, updated)
     }
-
-    const newSubmission = this.submissionRepository.create({...dto,file:file.path, assignment:{id:assignmentId}, user:user})
+    
+    const path = await supabase.uploadFile('submission', file)
+    const newSubmission = this.submissionRepository.create({...dto,file:path, assignment:{id:assignmentId}, user:user})
     console.log("Saving submission " + newSubmission)
 
     return await this.submissionRepository.save(newSubmission)

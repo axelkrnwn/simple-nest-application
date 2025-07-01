@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const course_detail_entity_1 = require("./entities/course-detail.entity");
 const typeorm_2 = require("typeorm");
+const supabase = require("../../util/storage.client");
 let CourseDetailsService = class CourseDetailsService {
     courseRepository;
     constructor(courseRepository) {
@@ -36,7 +37,8 @@ let CourseDetailsService = class CourseDetailsService {
         if (files.size > maxSize) {
             throw new common_1.BadRequestException('file is too large!');
         }
-        const newCourse = this.courseRepository.create({ ...dto, createdDate: new Date(), attachment: files.path, course: { id: courseId } });
+        const path = await supabase.uploadFile('course-detail', files);
+        const newCourse = this.courseRepository.create({ ...dto, createdDate: new Date(), attachment: path, course: { id: courseId } });
         console.log('Saving course detail:', newCourse);
         return await this.courseRepository.save(newCourse);
     }

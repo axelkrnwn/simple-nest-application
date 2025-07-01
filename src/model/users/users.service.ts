@@ -26,7 +26,7 @@ export class UsersService {
             throw new Error("Email pattern invalid!")
         }
         console.log('here 3')
-        if (!dto.password.match("^[a-zA-Z0-9]+$")){
+        if (!dto.password.match("^[a-zA-Z0-9_]+$")){
             throw new Error("Password must be alphanumeric!")
         }
         console.log('here')

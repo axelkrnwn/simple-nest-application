@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Course } from './entities/courses.entity';
 import { AddCourseDTO } from './dtos/add-course.dto';
 import { User } from '../users/entities/users.entity';
+import * as supabase from '../../util/storage.client';
+
 
 @Injectable()
 export class CoursesService {
@@ -34,7 +36,8 @@ export class CoursesService {
             throw new BadRequestException('file is too large!');
         }
 
-        const newCourse = this.courseRepository.create({...dto, image:image.path, teacher:teacher})
+        const path = await supabase.uploadFile('course', image)
+        const newCourse = this.courseRepository.create({...dto, image: path, teacher: teacher})
         console.log('Saving course:', newCourse)
         return await this.courseRepository.save(newCourse)
     }

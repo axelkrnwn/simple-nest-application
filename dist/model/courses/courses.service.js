@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const courses_entity_1 = require("./entities/courses.entity");
+const supabase = require("../../util/storage.client");
 let CoursesService = class CoursesService {
     courseRepository;
     constructor(courseRepository) {
@@ -38,7 +39,8 @@ let CoursesService = class CoursesService {
         if (image.size > maxSize) {
             throw new common_1.BadRequestException('file is too large!');
         }
-        const newCourse = this.courseRepository.create({ ...dto, image: image.path, teacher: teacher });
+        const path = await supabase.uploadFile('course', image);
+        const newCourse = this.courseRepository.create({ ...dto, image: path, teacher: teacher });
         console.log('Saving course:', newCourse);
         return await this.courseRepository.save(newCourse);
     }

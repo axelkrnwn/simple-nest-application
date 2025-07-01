@@ -4,6 +4,7 @@ import { UpdateCourseDetailDto } from './dto/update-course-detail.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CourseDetail } from './entities/course-detail.entity';
 import { Repository } from 'typeorm';
+import * as supabase from '../../util/storage.client'
 
 @Injectable()
 export class CourseDetailsService {
@@ -25,8 +26,8 @@ export class CourseDetailsService {
             files.size > maxSize) {
             throw new BadRequestException('file is too large!');
         }
-      
-      const newCourse = this.courseRepository.create({...dto, createdDate: new Date(), attachment:files.path, course:{id:courseId}})
+      const path = await supabase.uploadFile('course-detail', files)
+      const newCourse = this.courseRepository.create({...dto, createdDate: new Date(), attachment:path, course:{id:courseId}})
       console.log('Saving course detail:', newCourse)
       return await this.courseRepository.save(newCourse)
   }
