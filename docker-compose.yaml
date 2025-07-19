@@ -1,0 +1,56 @@
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-linkasa
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: linkasa123
+      MYSQL_DATABASE: linkasa
+      MYSQL_USER: linkasa
+      MYSQL_PASSWORD: linkasa123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+        - db_network
+  backend:
+    build: ./backend
+    container_name: backend-linkasa
+    environment:
+      - PORT=5000
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=linkasa
+      - DB_PASSWORD=linkasa123
+      - DB_NAME=linkasa
+      - JWT_SECRET=L1nk4Sa
+      - ADMIN_EMAIL=linkasa.admin@linkasa.com
+      - ADMIN_PASSWORD=@dM1n_12E
+    ports:
+      - 5000:5000
+    depends_on:
+      - mysql
+    networks:
+        - db_network
+        - app_network
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.100.0/25
+          ip_range: 192.168.100.0/25
+          gateway: 192.168.100.1     
+  db_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.100.128/25
+          ip_range: 192.168.100.128/25
+          gateway: 192.168.100.129
+        
